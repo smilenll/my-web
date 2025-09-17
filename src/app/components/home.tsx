@@ -1,7 +1,6 @@
 'use client';
 
 import { withAuthenticator } from "@aws-amplify/ui-react";
-import { JobScraperButton } from "./JobScraperButton";
 
 interface AuthenticatedHomeProps {
   signOut?: () => void;
@@ -21,7 +20,6 @@ function AuthenticatedHome({ signOut, user, renderedAt }: AuthenticatedHomeProps
       <p suppressHydrationWarning>
         This page was server-side rendered on {renderedAt}.
       </p>
-      <JobScraperButton />
     </div>
   );
 }
