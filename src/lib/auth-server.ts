@@ -1,12 +1,16 @@
 import { cookies } from 'next/headers';
-import { runWithAmplifyServerContext } from '@aws-amplify/adapter-nextjs/api';
+import { createServerRunner } from '@aws-amplify/adapter-nextjs';
 import { getCurrentUser, fetchUserAttributes } from 'aws-amplify/auth/server';
 import awsExports from '../aws-exports';
+
+const { runWithAmplifyServerContext } = createServerRunner({
+  config: awsExports,
+});
 
 export interface ServerUser {
   userId: string;
   username: string;
-  attributes?: Record<string, any>;
+  attributes?: Record<string, string | undefined>;
 }
 
 /**
@@ -18,7 +22,6 @@ export async function getAuthenticatedUser(): Promise<ServerUser | null> {
     const user = await runWithAmplifyServerContext({
       nextServerContext: { cookies },
       operation: (contextSpec) => getCurrentUser(contextSpec),
-      config: awsExports
     });
 
     if (!user) return null;
@@ -52,7 +55,6 @@ export async function getAuthenticatedUserWithAttributes(): Promise<ServerUser |
           attributes
         };
       },
-      config: awsExports
     });
 
     return user;
@@ -70,8 +72,11 @@ export async function userHasRole(role: string): Promise<boolean> {
     const user = await getAuthenticatedUserWithAttributes();
     if (!user?.attributes) return false;
 
-    const userGroups = user.attributes['cognito:groups'] || [];
-    return userGroups.includes(role);
+    const userGroups = user.attributes['cognito:groups'];
+    if (typeof userGroups === 'string') {
+      return userGroups.split(',').includes(role);
+    }
+    return false;
   } catch (error) {
     console.error('Role check error:', error);
     return false;

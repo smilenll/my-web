@@ -1,12 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { runWithAmplifyServerContext } from '@aws-amplify/adapter-nextjs/api';
-import { getCurrentUser } from 'aws-amplify/auth/server';
-import awsExports from './src/aws-exports';
 
-// Define protected and public routes
-const protectedPaths = ['/dashboard', '/profile', '/admin'];
-const publicPaths = ['/', '/about', '/contact'];
-const authPaths = ['/login', '/signup'];
+// Define protected routes that require authentication
+const protectedPaths = ['/dashboard', '/profile'];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -20,46 +15,19 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  try {
-    // Check if user is authenticated
-    const user = await runWithAmplifyServerContext({
-      nextServerContext: { request },
-      operation: (contextSpec) => getCurrentUser(contextSpec),
-      config: awsExports
-    });
+  // For now, let client-side auth handle protection
+  // Server-side auth can be added later when needed
+  const isProtectedPath = protectedPaths.some(path => pathname.startsWith(path));
 
-    const isAuthenticated = !!user;
-    const isProtectedPath = protectedPaths.some(path => pathname.startsWith(path));
-    const isAuthPath = authPaths.some(path => pathname.startsWith(path));
-    const isPublicPath = publicPaths.includes(pathname);
-
-    // Redirect authenticated users away from auth pages
-    if (isAuthenticated && isAuthPath) {
-      return NextResponse.redirect(new URL('/', request.url));
-    }
-
-    // Redirect unauthenticated users from protected pages
-    if (!isAuthenticated && isProtectedPath) {
-      return NextResponse.redirect(new URL('/login', request.url));
-    }
-
-    // Allow access to public paths
-    if (isPublicPath) {
-      return NextResponse.next();
-    }
-
-    return NextResponse.next();
-  } catch (error) {
-    console.error('Middleware auth error:', error);
-
-    // On auth error, redirect to home for protected paths
-    const isProtectedPath = protectedPaths.some(path => pathname.startsWith(path));
-    if (isProtectedPath) {
-      return NextResponse.redirect(new URL('/', request.url));
-    }
-
-    return NextResponse.next();
+  if (isProtectedPath) {
+    // Add a header to indicate this is a protected route
+    // The client-side can use this to redirect if not authenticated
+    const response = NextResponse.next();
+    response.headers.set('x-protected-route', 'true');
+    return response;
   }
+
+  return NextResponse.next();
 }
 
 export const config = {

@@ -1,0 +1,35 @@
+'use client';
+
+import { User, UserCircle } from 'lucide-react';
+import { Button } from '@/shared/ui/button';
+import { AuthDialog } from './auth-dialog';
+import { useAuth } from '@/hooks/useAuth';
+
+export function UserMenu() {
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <Button variant="ghost" size="icon" className="h-9 w-9" disabled>
+        <UserCircle className="h-4 w-4 animate-pulse" />
+      </Button>
+    );
+  }
+
+  return (
+    <AuthDialog>
+      <Button
+        variant="ghost"
+        size="icon"
+        className="h-9 w-9"
+        aria-label={isAuthenticated ? "User profile" : "Sign in"}
+      >
+        {isAuthenticated ? (
+          <User className="h-4 w-4" />
+        ) : (
+          <UserCircle className="h-4 w-4" />
+        )}
+      </Button>
+    </AuthDialog>
+  );
+}

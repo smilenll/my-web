@@ -2,9 +2,9 @@
 
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import { useAuth } from "../../hooks/useAuth";
-import { LoadingSpinner, ErrorDisplay } from "../../components/LoadingSpinner";
+import { LoadingSpinner, ErrorDisplay } from "../../shared/LoadingSpinner";
 
-interface AuthenticatedHomeProps {
+interface HomeProps {
   signOut?: () => void;
   user?: {
     username: string;
@@ -12,7 +12,7 @@ interface AuthenticatedHomeProps {
   renderedAt: string;
 }
 
-function AuthenticatedHome({ renderedAt }: AuthenticatedHomeProps) {
+function Home({ renderedAt }: HomeProps) {
   const { user, loading, error, signOut, hasRole, getUserGroups } = useAuth();
 
   if (loading) {
@@ -87,4 +87,4 @@ function AuthenticatedHome({ renderedAt }: AuthenticatedHomeProps) {
   );
 }
 
-export default withAuthenticator(AuthenticatedHome);
+export default withAuthenticator(Home);

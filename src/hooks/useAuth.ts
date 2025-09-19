@@ -41,7 +41,7 @@ export function useAuth() {
       if (idToken) {
         const payload = idToken.payload;
         const cognitoGroups = payload['cognito:groups'];
-        groups = Array.isArray(cognitoGroups) ? cognitoGroups : [];
+        groups = Array.isArray(cognitoGroups) ? cognitoGroups.filter(g => typeof g === 'string') : [];
 
       }
 
@@ -49,7 +49,7 @@ export function useAuth() {
         user: {
           userId: currentUser.userId,
           username: currentUser.username,
-          email: idToken?.payload.email || currentUser.signInDetails?.loginId || currentUser.username,
+          email: (typeof idToken?.payload.email === 'string' ? idToken.payload.email : undefined) || currentUser.signInDetails?.loginId || currentUser.username,
           groups: groups
         },
         loading: false,
