@@ -1,11 +1,13 @@
 'use client';
 
-import { getCurrentUser, signOut } from 'aws-amplify/auth';
+import { getCurrentUser, signOut, fetchUserAttributes } from 'aws-amplify/auth';
 import { useEffect, useState } from 'react';
 
 interface User {
   userId: string;
   username: string;
+  email?: string;
+  groups?: string[];
 }
 
 interface AuthState {
@@ -30,11 +32,24 @@ export function useAuth() {
       setAuthState(prev => ({ ...prev, loading: true, error: null }));
 
       const currentUser = await getCurrentUser();
+      const userAttributes = await fetchUserAttributes();
+
+      // Extract groups from cognito:groups attribute
+      const cognitoGroups = userAttributes['cognito:groups'];
+      const groups = cognitoGroups ? cognitoGroups.split(',') : [];
+
+      // Fallback: if user email is admin email and no groups, treat as admin
+      const isAdminEmail = userAttributes.email === 'smilenlyubenov@gmail.com';
+      if (isAdminEmail && groups.length === 0) {
+        groups.push('admin');
+      }
 
       setAuthState({
         user: {
           userId: currentUser.userId,
-          username: currentUser.username
+          username: currentUser.username,
+          email: userAttributes.email || currentUser.signInDetails?.loginId || currentUser.username,
+          groups: groups
         },
         loading: false,
         error: null
@@ -65,11 +80,12 @@ export function useAuth() {
   }
 
   function getUserGroups(): string[] {
-    return [];
+    return authState.user?.groups || [];
   }
 
   function hasRole(role: string): boolean {
-    return false;
+    const groups = getUserGroups();
+    return groups.some(group => group.toLowerCase() === role.toLowerCase());
   }
 
   return {
@@ -80,6 +96,7 @@ export function useAuth() {
     signOut: handleSignOut,
     getUserGroups,
     hasRole,
-    isAuthenticated: !!authState.user
+    isAuthenticated: !!authState.user,
+    isAdmin: hasRole('admin')
   };
 }

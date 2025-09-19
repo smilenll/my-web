@@ -37,7 +37,13 @@
     "resourceName": "myweb3d518149",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "default",
-    "userPoolGroupList": [],
+    "userPoolGroupList": [
+      {
+        "groupName": "Admin",
+        "precedence": 1,
+        "description": "Administrators with full access"
+      }
+    ],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
     "useEnabledMfas": true

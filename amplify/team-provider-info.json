@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "myweb3d518149": {}
+        "myweb3d518149": {},
+        "userPoolGroups": {}
       }
     }
   }
