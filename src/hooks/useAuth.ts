@@ -1,6 +1,6 @@
 'use client';
 
-import { getCurrentUser, signOut, fetchUserAttributes } from 'aws-amplify/auth';
+import { getCurrentUser, signOut, fetchAuthSession } from 'aws-amplify/auth';
 import { useEffect, useState } from 'react';
 
 interface User {
@@ -32,23 +32,24 @@ export function useAuth() {
       setAuthState(prev => ({ ...prev, loading: true, error: null }));
 
       const currentUser = await getCurrentUser();
-      const userAttributes = await fetchUserAttributes();
+      const session = await fetchAuthSession();
 
-      // Extract groups from cognito:groups attribute
-      const cognitoGroups = userAttributes['cognito:groups'];
-      const groups = cognitoGroups ? cognitoGroups.split(',') : [];
+      // Get groups from the ID token payload
+      const idToken = session.tokens?.idToken;
+      let groups: string[] = [];
 
-      // Fallback: if user email is admin email and no groups, treat as admin
-      const isAdminEmail = userAttributes.email === 'smilenlyubenov@gmail.com';
-      if (isAdminEmail && groups.length === 0) {
-        groups.push('admin');
+      if (idToken) {
+        const payload = idToken.payload;
+        const cognitoGroups = payload['cognito:groups'];
+        groups = Array.isArray(cognitoGroups) ? cognitoGroups : [];
+
       }
 
       setAuthState({
         user: {
           userId: currentUser.userId,
           username: currentUser.username,
-          email: userAttributes.email || currentUser.signInDetails?.loginId || currentUser.username,
+          email: idToken?.payload.email || currentUser.signInDetails?.loginId || currentUser.username,
           groups: groups
         },
         loading: false,

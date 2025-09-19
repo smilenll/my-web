@@ -1,10 +1,18 @@
 [
   {
     "groupName": {
-      "groupName": "Admin",
+      "groupName": "admin",
       "precedence": 1,
       "description": "Administrators with full access"
     },
     "precedence": 1
+  },
+  {
+    "groupName": {
+      "groupName": "user",
+      "precedence": 2,
+      "description": "Regular users with limited access"
+    },
+    "precedence": 2
   }
 ]

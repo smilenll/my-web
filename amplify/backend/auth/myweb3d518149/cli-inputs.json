@@ -39,9 +39,14 @@
     "useDefault": "default",
     "userPoolGroupList": [
       {
-        "groupName": "Admin",
+        "groupName": "admin",
         "precedence": 1,
         "description": "Administrators with full access"
+      },
+      {
+        "groupName": "user",
+        "precedence": 2,
+        "description": "Regular users with limited access"
       }
     ],
     "serviceName": "Cognito",
