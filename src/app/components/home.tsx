@@ -2,7 +2,7 @@
 
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import { useAuth } from "../../hooks/useAuth";
-import { LoadingSpinner, ErrorDisplay } from "../../shared/LoadingSpinner";
+import { LoadingSpinner, ErrorDisplay } from "../../ui/LoadingSpinner";
 
 interface HomeProps {
   signOut?: () => void;

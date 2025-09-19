@@ -1,8 +1,10 @@
-import { PageLayout, HeroSection, ContentSection } from '@/shared';
+import { HeroSection } from '@/app/components/hero-section';
+import { ContentSection } from '@/app/components/content-section';
+import { AdminSection } from '@/app/components/AdminSection';
 
 export default function HomePage() {
   return (
-    <PageLayout>
+    <>
       <HeroSection
         title="Welcome to MyWeb"
         subtitle="Build amazing experiences with modern technology"
@@ -46,8 +48,11 @@ export default function HomePage() {
             Join thousands of developers who are building amazing applications with our platform.
             Start your journey today and see the difference.
           </p>
+
+          {/* Admin-only section */}
+          <AdminSection />
         </div>
       </ContentSection>
-    </PageLayout>
+    </>
   );
 }

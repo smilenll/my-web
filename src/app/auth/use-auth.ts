@@ -2,7 +2,6 @@
 
 import { getCurrentUser, signOut, fetchAuthSession } from 'aws-amplify/auth';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 
 interface User {
   userId: string;
@@ -18,7 +17,6 @@ interface AuthState {
 }
 
 export function useAuth() {
-  const router = useRouter();
   const [authState, setAuthState] = useState<AuthState>({
     user: null,
     loading: true,
@@ -74,8 +72,6 @@ export function useAuth() {
         loading: false,
         error: null
       });
-      // Navigate to home page after successful sign out
-      router.push('/');
     } catch (err) {
       setAuthState(prev => ({
         ...prev,

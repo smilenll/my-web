@@ -1,7 +1,7 @@
 'use client';
 
 import { ArrowRight, PlayCircle } from 'lucide-react';
-import { Button } from '@/shared/ui/button';
+import { Button } from '@/ui/button';
 
 interface HeroSectionProps {
   title?: string;

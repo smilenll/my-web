@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AmplifyClientConfig from "./AmplifyClientConfig";
+import { MainNav } from '@/app/components/navigation/main-nav';
+import { Footer } from '@/app/components/footer';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,8 +32,16 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning={true}
       >
-         <AmplifyClientConfig />
-        {children}
+        <AmplifyClientConfig />
+        <AuthProvider>
+          <div className="min-h-screen flex flex-col">
+            <MainNav />
+            <main className="flex-grow">
+              {children}
+            </main>
+            <Footer />
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );

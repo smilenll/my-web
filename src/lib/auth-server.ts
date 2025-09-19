@@ -21,7 +21,19 @@ export async function getAuthenticatedUser(): Promise<ServerUser | null> {
   try {
     const user = await runWithAmplifyServerContext({
       nextServerContext: { cookies },
-      operation: (contextSpec) => getCurrentUser(contextSpec),
+      operation: async (contextSpec) => {
+        try {
+          return await getCurrentUser(contextSpec);
+        } catch (authError: unknown) {
+          // Handle authentication errors gracefully
+          if (authError instanceof Error &&
+              (authError.name === 'UserUnAuthenticatedException' ||
+               authError.message?.includes('User needs to be authenticated'))) {
+            return null;
+          }
+          throw authError;
+        }
+      },
     });
 
     if (!user) return null;
@@ -44,16 +56,26 @@ export async function getAuthenticatedUserWithAttributes(): Promise<ServerUser |
     const user = await runWithAmplifyServerContext({
       nextServerContext: { cookies },
       operation: async (contextSpec) => {
-        const currentUser = await getCurrentUser(contextSpec);
-        if (!currentUser) return null;
+        try {
+          const currentUser = await getCurrentUser(contextSpec);
+          if (!currentUser) return null;
 
-        const attributes = await fetchUserAttributes(contextSpec);
+          const attributes = await fetchUserAttributes(contextSpec);
 
-        return {
-          userId: currentUser.userId,
-          username: currentUser.username,
-          attributes
-        };
+          return {
+            userId: currentUser.userId,
+            username: currentUser.username,
+            attributes
+          };
+        } catch (authError: unknown) {
+          // Handle authentication errors gracefully
+          if (authError instanceof Error &&
+              (authError.name === 'UserUnAuthenticatedException' ||
+               authError.message?.includes('User needs to be authenticated'))) {
+            return null;
+          }
+          throw authError;
+        }
       },
     });
 
@@ -70,11 +92,16 @@ export async function getAuthenticatedUserWithAttributes(): Promise<ServerUser |
 export async function userHasRole(role: string): Promise<boolean> {
   try {
     const user = await getAuthenticatedUserWithAttributes();
-    if (!user?.attributes) return false;
+
+    if (!user?.attributes) {
+      return false;
+    }
 
     const userGroups = user.attributes['cognito:groups'];
+
     if (typeof userGroups === 'string') {
-      return userGroups.split(',').includes(role);
+      const groups = userGroups.split(',');
+      return groups.includes(role);
     }
     return false;
   } catch (error) {

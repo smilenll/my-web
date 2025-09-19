@@ -1,9 +1,9 @@
 'use client';
 
 import { User, UserCircle } from 'lucide-react';
-import { Button } from '@/shared/ui/button';
+import { Button } from '@/ui/button';
 import { AuthDialog } from './auth-dialog';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/AuthContext';
 
 export function UserMenu() {
   const { isAuthenticated, loading } = useAuth();

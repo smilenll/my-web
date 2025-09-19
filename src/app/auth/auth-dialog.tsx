@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react';
 import { Authenticator } from '@aws-amplify/ui-react';
 import { User, LogOut, Settings, Shield } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/shared/ui/dialog';
-import { Button } from '@/shared/ui/button';
-import { useAuth } from '@/hooks/useAuth';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/dialog';
+import { Button } from '@/ui/button';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface AuthDialogProps {
   children: React.ReactNode;
@@ -28,7 +28,7 @@ export function AuthDialog({ children }: AuthDialogProps) {
     if (isAuthenticated && isOpen && !wasAuthenticatedOnOpen) {
       const timer = setTimeout(() => {
         setIsOpen(false);
-      }, 100);
+      }, 500); // Slightly longer delay to ensure smooth UX
       return () => clearTimeout(timer);
     }
   }, [isAuthenticated, isOpen, wasAuthenticatedOnOpen]);

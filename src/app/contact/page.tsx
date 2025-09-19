@@ -1,12 +1,11 @@
-import { PageLayout, ContentSection } from '@/shared';
-import { Button } from '@/shared/ui/button';
+import { ContentSection } from '@/app/components/content-section';
+import { Button } from '@/ui/button';
 import { Mail, Phone, MapPin } from 'lucide-react';
 
 export default function ContactPage() {
   return (
-    <PageLayout>
-      <div className="pt-20 pb-16">
-        <ContentSection title="Contact Us">
+    <div className="pt-20 pb-16">
+      <ContentSection title="Contact Us">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <p className="text-lg text-muted-foreground">
@@ -144,8 +143,7 @@ export default function ContactPage() {
               </div>
             </div>
           </div>
-        </ContentSection>
-      </div>
-    </PageLayout>
+      </ContentSection>
+    </div>
   );
 }
