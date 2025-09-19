@@ -48,7 +48,7 @@ export function AuthDialog({ children }: AuthDialogProps) {
         <DialogTrigger asChild>
           {children}
         </DialogTrigger>
-        <DialogContent className="sm:max-w-lg w-full max-h-[85vh] overflow-hidden flex flex-col">
+        <DialogContent className="sm:max-w-lg w-full max-h-[85vh] flex flex-col">
           <DialogHeader>
             <DialogTitle className="flex items-center space-x-2">
               <User className="h-5 w-5" />
@@ -145,23 +145,11 @@ export function AuthDialog({ children }: AuthDialogProps) {
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg w-full max-h-[85vh] overflow-hidden flex flex-col">
-        <DialogHeader>
-          <DialogTitle>Welcome to MyWeb</DialogTitle>
-        </DialogHeader>
-
-        <div className="flex-1 overflow-y-auto py-2">
-          <div className="text-center mb-4">
-            <h2 className="text-lg font-semibold">Sign in to your account</h2>
-            <p className="text-sm text-muted-foreground">
-              Enter your credentials to access your account
-            </p>
-          </div>
-
-          <div className="max-h-[60vh] overflow-y-auto">
-            <Authenticator
+      <DialogContent className="sm:max-w-lg w-full max-h-[85vh] flex flex-col">
+      <Authenticator
               hideSignUp={false}
-              variation="modal"
+              variation="default"
+              className="flex-1 overflow-auto"
             >
             {({ signOut: amplifySignOut }) => {
               // Use the amplify signOut if available, otherwise use our hook
@@ -184,8 +172,6 @@ export function AuthDialog({ children }: AuthDialogProps) {
               );
             }}
             </Authenticator>
-          </div>
-        </div>
       </DialogContent>
     </Dialog>
   );
