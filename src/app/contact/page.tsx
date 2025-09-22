@@ -1,5 +1,5 @@
 import { ContentSection } from '@/app/components/content-section';
-import { Button } from '@/ui/button';
+import { Button } from '@/app/components/ui/button';
 import { Mail, Phone, MapPin } from 'lucide-react';
 
 export default function ContactPage() {

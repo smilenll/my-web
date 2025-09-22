@@ -4,11 +4,10 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu } from 'lucide-react';
-import { Button } from '@/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/ui/sheet';
-import { NavigationMenu, NavigationMenuItem, NavigationMenuList, NavigationMenuLink } from '@/ui/navigation-menu';
-import { ThemeToggle } from '@/app/components/theme-toggle';
-import { UserMenu, useAuth } from '@/app/auth';
+import { Button, Sheet, SheetContent, SheetTrigger, NavigationMenu, NavigationMenuItem, NavigationMenuList, NavigationMenuLink } from '@/components/ui';
+import { ThemeToggle } from './theme-toggle';
+import { UserMenu } from '@/app/auth';
+import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 
 const navigationItems = [

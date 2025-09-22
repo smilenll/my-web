@@ -1,5 +1,5 @@
-import { ContentSection } from '@/app/components/content-section';
-import AdminPanel from '@/app/admin/components/AdminPanel';
+import { ContentSection } from '@/components/sections';
+import AdminPanel from './components/AdminPanel';
 
 export default function AdminPage() {
   // Auth check is handled by the AdminPanel component on the client side

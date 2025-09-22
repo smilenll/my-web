@@ -1,5 +1,4 @@
-import { HeroSection } from '@/app/components/hero-section';
-import { ContentSection } from '@/app/components/content-section';
+import { HeroSection, ContentSection } from '@/components/sections';
 import { AdminSection } from '@/app/components/AdminSection';
 
 export default function HomePage() {

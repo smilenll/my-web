@@ -1,7 +1,7 @@
 'use client';
 
 import { User, UserCircle } from 'lucide-react';
-import { Button } from '@/ui/button';
+import { Button } from '@/components/ui';
 import { AuthDialog } from './auth-dialog';
 import { useAuth } from '@/contexts/AuthContext';
 

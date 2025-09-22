@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AmplifyClientConfig from "./AmplifyClientConfig";
-import { MainNav } from '@/app/components/navigation/main-nav';
-import { Footer } from '@/app/components/footer';
+import { MainNav, Footer } from '@/components/layout';
 import { AuthProvider } from '@/contexts/AuthContext';
 
 const geistSans = Geist({
