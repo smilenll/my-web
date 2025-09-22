@@ -146,10 +146,56 @@ export function AuthDialog({ children }: AuthDialogProps) {
         {children}
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg w-full max-h-[85vh] flex flex-col">
-      <Authenticator
+        <DialogHeader>
+          <DialogTitle>Welcome to MyWeb</DialogTitle>
+        </DialogHeader>
+
+        <div className="flex-1 w-full">
+          <div className="text-center mb-4">
+            <h2 className="text-lg font-semibold">Sign in to your account</h2>
+            <p className="text-sm text-muted-foreground">
+              Enter your credentials to access your account
+            </p>
+          </div>
+
+          <Authenticator
               hideSignUp={false}
               variation="default"
-              className="flex-1 overflow-auto"
+              className="display-block w-full"
+              loginMechanisms={['email']}
+              signUpAttributes={['email']}
+              formFields={{
+                signIn: {
+                  email: {
+                    placeholder: 'Enter your email address',
+                    label: 'Email',
+                  },
+                  password: {
+                    placeholder: 'Enter your password',
+                    label: 'Password',
+                  },
+                },
+                signUp: {
+                  email: {
+                    order: 1,
+                    placeholder: 'Enter your email address',
+                    label: 'Email *',
+                    required: true,
+                  },
+                  password: {
+                    order: 2,
+                    placeholder: 'Create a secure password (min 8 chars)',
+                    label: 'Password *',
+                    required: true,
+                  },
+                  confirm_password: {
+                    order: 3,
+                    placeholder: 'Confirm your password',
+                    label: 'Confirm Password *',
+                    required: true,
+                  },
+                },
+              }}
             >
             {({ signOut: amplifySignOut }) => {
               // Use the amplify signOut if available, otherwise use our hook
@@ -172,6 +218,7 @@ export function AuthDialog({ children }: AuthDialogProps) {
               );
             }}
             </Authenticator>
+        </div>
       </DialogContent>
     </Dialog>
   );

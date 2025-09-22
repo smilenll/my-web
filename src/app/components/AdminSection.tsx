@@ -1,6 +1,6 @@
 'use client';
 
-import { AdminOnly, AdminButton } from '@/components/auth';
+import { AdminOnly, AdminButton } from './auth';
 import { useRouter } from 'next/navigation';
 
 export function AdminSection() {
