@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import UserList from './user-list';
 
 interface AdminContentProps {
   activeItem?: string;
@@ -11,40 +12,7 @@ const contentMap: Record<string, { title: string; description: string; content: 
   'All Users': {
     title: 'User Management',
     description: 'View and manage all users in the system',
-    content: (
-      <div className="space-y-4">
-        <div className="flex justify-between items-center">
-          <h3 className="text-lg font-medium">Users Overview</h3>
-          <Button>Add New User</Button>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Total Users</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-bold">1,247</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>Active Users</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-bold">1,089</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>Admin Users</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-bold">23</p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    ),
+    content: <UserList />,
   },
   'Add User': {
     title: 'Add New User',

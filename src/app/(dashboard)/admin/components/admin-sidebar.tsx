@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import {
   Users,
   Settings,
@@ -40,42 +42,41 @@ const menuItems = [
   {
     title: 'User Management',
     icon: Users,
+    href: '/admin/users',
     items: [
-      { title: 'All Users', icon: Users },
-      { title: 'Add User', icon: UserPlus },
-      { title: 'User Roles', icon: UserCheck },
-      { title: 'Permissions', icon: Shield },
+      { title: 'All Users', icon: Users, href: '/admin/users' },
+      { title: 'Add User', icon: UserPlus, href: '/admin/users/add' },
+      { title: 'User Roles', icon: UserCheck, href: '/admin/users/roles' },
+      { title: 'Permissions', icon: Shield, href: '/admin/users/permissions' },
     ],
   },
   {
     title: 'System Settings',
     icon: Settings,
+    href: '/admin/settings',
     items: [
-      { title: 'General', icon: Settings },
-      { title: 'Security', icon: Lock },
-      { title: 'Monitoring', icon: Monitor },
-      { title: 'Notifications', icon: Bell },
+      { title: 'General', icon: Settings, href: '/admin/settings' },
+      { title: 'Security', icon: Lock, href: '/admin/settings/security' },
+      { title: 'Monitoring', icon: Monitor, href: '/admin/settings/monitoring' },
+      { title: 'Notifications', icon: Bell, href: '/admin/settings/notifications' },
     ],
   },
   {
     title: 'Database Operations',
     icon: Database,
+    href: '/admin/database',
     items: [
-      { title: 'Query Builder', icon: Database },
-      { title: 'Backups', icon: FileText },
-      { title: 'Analytics', icon: BarChart3 },
-      { title: 'Performance', icon: Activity },
+      { title: 'Query Builder', icon: Database, href: '/admin/database' },
+      { title: 'Backups', icon: FileText, href: '/admin/database/backups' },
+      { title: 'Analytics', icon: BarChart3, href: '/admin/database/analytics' },
+      { title: 'Performance', icon: Activity, href: '/admin/database/performance' },
     ],
   },
 ];
 
-interface AdminSidebarProps {
-  activeItem?: string;
-  onItemSelect?: (item: string) => void;
-}
-
-export default function AdminSidebar({ activeItem, onItemSelect }: AdminSidebarProps) {
+export default function AdminSidebar() {
   const [openGroups, setOpenGroups] = useState<string[]>(['User Management']);
+  const pathname = usePathname();
 
   const toggleGroup = (groupTitle: string) => {
     setOpenGroups(prev =>
@@ -83,10 +84,6 @@ export default function AdminSidebar({ activeItem, onItemSelect }: AdminSidebarP
         ? prev.filter(title => title !== groupTitle)
         : [...prev, groupTitle]
     );
-  };
-
-  const handleItemClick = (item: string) => {
-    onItemSelect?.(item);
   };
 
   return (
@@ -108,14 +105,16 @@ export default function AdminSidebar({ activeItem, onItemSelect }: AdminSidebarP
                 >
                   <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
-                      <SidebarMenuButton className="w-full">
-                        <group.icon className="h-4 w-4" />
-                        <span>{group.title}</span>
-                        <ChevronDown
-                          className={`ml-auto h-4 w-4 transition-transform ${
-                            openGroups.includes(group.title) ? 'rotate-180' : ''
-                          }`}
-                        />
+                      <SidebarMenuButton className="w-full" asChild>
+                        <Link href={group.href}>
+                          <group.icon className="h-4 w-4" />
+                          <span>{group.title}</span>
+                          <ChevronDown
+                            className={`ml-auto h-4 w-4 transition-transform ${
+                              openGroups.includes(group.title) ? 'rotate-180' : ''
+                            }`}
+                          />
+                        </Link>
                       </SidebarMenuButton>
                     </CollapsibleTrigger>
                     <CollapsibleContent>
@@ -123,11 +122,13 @@ export default function AdminSidebar({ activeItem, onItemSelect }: AdminSidebarP
                         {group.items.map((item) => (
                           <SidebarMenuSubItem key={item.title}>
                             <SidebarMenuSubButton
-                              onClick={() => handleItemClick(item.title)}
-                              isActive={activeItem === item.title}
+                              asChild
+                              isActive={pathname === item.href}
                             >
-                              <item.icon className="h-4 w-4" />
-                              <span>{item.title}</span>
+                              <Link href={item.href}>
+                                <item.icon className="h-4 w-4" />
+                                <span>{item.title}</span>
+                              </Link>
                             </SidebarMenuSubButton>
                           </SidebarMenuSubItem>
                         ))}
