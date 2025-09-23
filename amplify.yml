@@ -1,9 +1,14 @@
 version: 1
+backend:
+  phases:
+    build:
+      commands:
+        - '# Skip backend build since it is already deployed'
 frontend:
   phases:
     preBuild:
       commands:
-        - npm install
+        - npm ci
     build:
       commands:
         - npm run build
@@ -14,3 +19,4 @@ frontend:
   cache:
     paths:
       - node_modules/**/*
+      - .next/cache/**/*
