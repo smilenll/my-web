@@ -9,7 +9,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/app/components/ui/sheet';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList, NavigationMenuLink } from '@/app/components/ui/navigation-menu';
 import { ThemeToggle } from '../theme-toggle';
 import { UserMenu } from '@/app/auth';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/auth-context';
 import { cn } from '@/lib/utils';
 
 const navigationItems = [

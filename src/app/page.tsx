@@ -1,5 +1,5 @@
 import { HeroSection, ContentSection } from '@/components/sections';
-import { AdminSection } from '@/app/components/AdminSection';
+import { AdminSection } from '@/app/components/admin-section';
 
 export default function HomePage() {
   return (

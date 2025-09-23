@@ -1,8 +1,8 @@
 'use client';
 
 import { withAuthenticator } from "@aws-amplify/ui-react";
-import { useAuth } from "../../hooks/useAuth";
-import { LoadingSpinner, ErrorDisplay } from "./ui/LoadingSpinner";
+import { useAuth } from "@/contexts/auth-context";
+import { LoadingSpinner, ErrorDisplay } from "@/components";
 
 interface HomeProps {
   signOut?: () => void;

@@ -1,2 +1,2 @@
-export { AuthGuard, AdminOnly, AuthenticatedOnly } from './AuthGuard';
-export { AdminButton } from './AdminButton';
+export { AuthGuard, AdminOnly, AuthenticatedOnly } from './auth-guard';
+export { AdminButton } from './admin-button';

@@ -3,7 +3,7 @@
 import { User, UserCircle } from 'lucide-react';
 import { Button } from '@/components/ui';
 import { AuthDialog } from './auth-dialog';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/auth-context';
 
 export function UserMenu() {
   const { isAuthenticated, loading } = useAuth();

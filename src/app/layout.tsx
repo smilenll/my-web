@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AmplifyClientConfig from "./AmplifyClientConfig";
 import { MainNav, Footer } from '@/components/layout';
-import { AuthProvider } from '@/contexts/AuthContext';
+import { AuthProvider } from '@/contexts/auth-context';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,8 +31,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning={true}
       >
-        <AmplifyClientConfig />
         <AuthProvider>
+          <AmplifyClientConfig />
           <div className="min-h-screen flex flex-col">
             <MainNav />
             <main className="flex-grow">

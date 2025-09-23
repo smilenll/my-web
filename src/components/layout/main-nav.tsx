@@ -7,7 +7,7 @@ import { Menu } from 'lucide-react';
 import { Button, Sheet, SheetContent, SheetTrigger, NavigationMenu, NavigationMenuItem, NavigationMenuList, NavigationMenuLink } from '@/components/ui';
 import { ThemeToggle } from './theme-toggle';
 import { UserMenu } from '@/app/auth';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/auth-context';
 import { cn } from '@/lib/utils';
 
 const navigationItems = [
