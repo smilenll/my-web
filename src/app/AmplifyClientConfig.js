@@ -1,9 +1,9 @@
 'use client';
 
 import { Amplify } from 'aws-amplify';
-import awsExports from '../aws-exports';
+import config from '../amplifyconfiguration.json';
 
-Amplify.configure({ ...awsExports, ssr: true });
+Amplify.configure({ ...config, ssr: true });
 
 export default function AmplifyClientConfig() {
   return null;

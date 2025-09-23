@@ -35,7 +35,7 @@ export async function getUsersAction(): Promise<AmplifyUser[]> {
         }
 
         const users: AmplifyUser[] = [];
-
+        console.log('Users:', result.Users)
         for (const user of result.Users) {
           const amplifyUser: AmplifyUser = {
             userId: user.Username || '',
