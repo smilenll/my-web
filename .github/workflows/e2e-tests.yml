@@ -76,11 +76,14 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
           const testStatus = '${{ job.status }}' === 'success' ? '✅ PASSED' : '❌ FAILED';
+          const testResult = '${{ job.status }}' === 'success' ? 'passed' : 'failed';
+          const reportLink = '${{ job.status }}' !== 'success' ? '📋 Check the [test report](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.' : '';
+
           const body = `## E2E Test Results ${testStatus}
 
-          🎭 Playwright tests have ${{ job.status === 'success' && 'passed' || 'failed' }}.
+          🎭 Playwright tests have ${testResult}.
 
-          ${{ job.status !== 'success' && '📋 Check the [test report](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.' || '' }}
+          ${reportLink}
           `;
 
           await github.rest.issues.createComment({
