@@ -4,7 +4,11 @@ import { useEffect, useState } from 'react';
 import { Moon, Sun } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 
-export function ThemeToggle() {
+interface ThemeToggleProps {
+  'data-test'?: string;
+}
+
+export function ThemeToggle({ 'data-test': dataTest }: ThemeToggleProps = {}) {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
@@ -40,6 +44,7 @@ export function ThemeToggle() {
       size="icon"
       onClick={toggleTheme}
       className="h-9 w-9"
+      data-test={dataTest}
     >
       <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
       <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />

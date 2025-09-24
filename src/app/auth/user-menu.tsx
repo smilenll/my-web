@@ -23,6 +23,7 @@ export function UserMenu() {
         size="icon"
         className="h-9 w-9"
         aria-label={isAuthenticated ? "User profile" : "Sign in"}
+        data-test="sign-in-button"
       >
         {isAuthenticated ? (
           <User className="h-4 w-4" />
