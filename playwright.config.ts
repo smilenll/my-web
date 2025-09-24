@@ -30,8 +30,8 @@ export default defineConfig({
 
   /* Shared settings for all the projects below */
   use: {
-    /* Base URL - your app runs on port 3001 */
-    baseURL: 'http://localhost:3001',
+    /* Base URL - your app runs on port 3000 */
+    baseURL: 'http://localhost:3000',
 
     /* Better trace collection for CI failures */
     trace: process.env.CI ? 'retain-on-failure' : 'on-first-retry',
