@@ -11,7 +11,7 @@ import { useAuth } from '@/contexts/auth-context';
 import { cn } from '@/lib/utils';
 
 const navigationItems = [
-  { name: 'Home', href: '/' },
+  { name: 'Portfolio', href: '/' },
   { name: 'Contact Us', href: '/contact' },
 ];
 

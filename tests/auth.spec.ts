@@ -43,7 +43,7 @@ test.describe('Authentication', () => {
       await expect(page.locator('[data-test="mobile-menu"]')).toBeVisible();
 
       // Should see basic navigation items in mobile menu
-      await expect(page.locator('[data-test="mobile-nav-home"]')).toBeVisible();
+      await expect(page.locator('[data-test="mobile-nav-portfolio"]')).toBeVisible();
       await expect(page.locator('[data-test="mobile-nav-contact-us"]')).toBeVisible();
 
       // Should NOT see admin link for unauthenticated users
@@ -53,7 +53,7 @@ test.describe('Authentication', () => {
       await page.keyboard.press('Escape');
     } else {
       // Desktop: Check navigation items directly
-      await expect(page.getByText('Home')).toBeVisible();
+      await expect(page.getByText('Portfolio')).toBeVisible();
       await expect(page.getByText('Contact Us')).toBeVisible();
 
       // Should NOT see admin link for unauthenticated users
