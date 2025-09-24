@@ -10,7 +10,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { getUsersAction, AmplifyUser, PaginatedUsersResult } from '@/actions/user-actions';
+import { getUsersAction, AmplifyUser } from '@/actions/user-actions';
 
 export default function UserList() {
   const [users, setUsers] = useState<AmplifyUser[]>([]);
