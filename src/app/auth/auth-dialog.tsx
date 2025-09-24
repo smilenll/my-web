@@ -22,7 +22,7 @@ export function AuthDialog({ children }: AuthDialogProps) {
         <DialogTrigger asChild>
           {children}
         </DialogTrigger>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md" data-test="auth-dialog">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <User className="h-4 w-4" />
@@ -62,9 +62,9 @@ export function AuthDialog({ children }: AuthDialogProps) {
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent data-test="auth-dialog">
         <DialogHeader>
-          <DialogTitle>Sign In</DialogTitle>
+          <DialogTitle data-test="auth-dialog-title">Sign In</DialogTitle>
         </DialogHeader>
 
         <Authenticator hideSignUp={false} />

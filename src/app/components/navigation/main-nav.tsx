@@ -62,7 +62,7 @@ export function MainNav() {
     <header className={navigationClass}>
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2">
+        <Link href="/" className="flex items-center space-x-2" data-test="site-logo">
           <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center">
             <span className="text-primary-foreground font-bold text-sm">MW</span>
           </div>
@@ -113,13 +113,13 @@ export function MainNav() {
 
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center space-x-2">
-          <ThemeToggle />
+          <ThemeToggle data-test="theme-toggle" />
           <UserMenu />
         </div>
 
         {/* Mobile Menu */}
         <div className="md:hidden flex items-center space-x-2">
-          <ThemeToggle />
+          <ThemeToggle data-test="theme-toggle-mobile" />
           <UserMenu />
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>

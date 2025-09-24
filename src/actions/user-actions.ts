@@ -1,7 +1,7 @@
 'use server';
 
 import { CognitoIdentityProviderClient, ListUsersCommand, AdminListGroupsForUserCommand } from '@aws-sdk/client-cognito-identity-provider';
-import config from '@/amplifyconfiguration.json';
+import config from '../amplifyconfiguration.json';
 
 export interface AmplifyUser {
   userId: string;
@@ -16,26 +16,39 @@ export interface AmplifyUser {
   groups?: string[];
 }
 
-export async function getUsersAction(): Promise<AmplifyUser[]> {
+export interface PaginatedUsersResult {
+  users: AmplifyUser[];
+  nextToken?: string;
+  hasMore: boolean;
+  totalFetched: number;
+}
+
+export async function getUsersAction(
+  limit: number = 60,
+  paginationToken?: string
+): Promise<PaginatedUsersResult> {
   try {
-    // Use AWS SDK with default credentials (from IAM role)
     const client = new CognitoIdentityProviderClient({
       region: config.aws_cognito_region,
     });
 
         const listUsersCommand = new ListUsersCommand({
           UserPoolId: config.aws_user_pools_id,
-          Limit: 60
+          Limit: limit,
+          PaginationToken: paginationToken
         });
 
         const result = await client.send(listUsersCommand);
 
         if (!result.Users) {
-          return [];
+          return {
+            users: [],
+            hasMore: false,
+            totalFetched: 0
+          };
         }
 
         const users: AmplifyUser[] = [];
-        console.log('Users:', result.Users)
         for (const user of result.Users) {
           const amplifyUser: AmplifyUser = {
             userId: user.Username || '',
@@ -71,7 +84,12 @@ export async function getUsersAction(): Promise<AmplifyUser[]> {
           users.push(amplifyUser);
         }
 
-    return users;
+    return {
+      users,
+      nextToken: result.PaginationToken,
+      hasMore: !!result.PaginationToken,
+      totalFetched: users.length
+    };
 
   } catch (error) {
     console.error('Error fetching users:', error);

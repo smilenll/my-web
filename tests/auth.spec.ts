@@ -4,12 +4,13 @@ test.describe('Authentication', () => {
   test('auth dialog opens when clicking sign in', async ({ page }) => {
     await page.goto('/');
 
-    // Click the user menu (sign in button) - use first one for desktop
-    await page.getByRole('button', { name: 'Sign in' }).first().click();
+    // Wait for page to load and then click the sign in button
+    await page.waitForLoadState('domcontentloaded');
+    await page.locator('[data-test="sign-in-button"]').first().click();
 
     // Check that auth dialog opens
-    await expect(page.getByRole('dialog')).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Sign In' })).toBeVisible();
+    await expect(page.locator('[data-test="auth-dialog"]')).toBeVisible();
+    await expect(page.locator('[data-test="auth-dialog-title"]')).toBeVisible();
 
     // Check that Amplify authenticator form is present
     await expect(page.locator('form')).toBeVisible();
@@ -18,29 +19,49 @@ test.describe('Authentication', () => {
   test('auth dialog can be closed', async ({ page }) => {
     await page.goto('/');
 
-    // Open auth dialog
-    await page.getByRole('button', { name: 'Sign in' }).first().click();
-    await expect(page.getByRole('dialog')).toBeVisible();
+    // Wait for page to load and open auth dialog
+    await page.waitForLoadState('domcontentloaded');
+    await page.locator('[data-test="sign-in-button"]').first().click();
+    await expect(page.locator('[data-test="auth-dialog"]')).toBeVisible();
 
     // Close dialog by clicking outside or escape key
     await page.keyboard.press('Escape');
 
     // Dialog should be closed
-    await expect(page.getByRole('dialog')).not.toBeVisible();
+    await expect(page.locator('[data-test="auth-dialog"]')).not.toBeVisible();
   });
 
   test('navigation shows correct items for unauthenticated user', async ({ page }) => {
     await page.goto('/');
 
-    // Should see basic navigation items
-    await expect(page.getByText('Home')).toBeVisible();
-    await expect(page.getByText('Contact Us')).toBeVisible();
+    // Check if we're on mobile or desktop
+    const isMobile = await page.locator('[data-test="mobile-menu-button"]').isVisible();
 
-    // Should NOT see admin link for unauthenticated users
-    await expect(page.getByText('Admin')).not.toBeVisible();
+    if (isMobile) {
+      // Mobile: Open the hamburger menu to check navigation items
+      await page.locator('[data-test="mobile-menu-button"]').click();
+      await expect(page.locator('[data-test="mobile-menu"]')).toBeVisible();
 
-    // Should see sign in button
-    await expect(page.getByRole('button', { name: 'Sign in' }).first()).toBeVisible();
+      // Should see basic navigation items in mobile menu
+      await expect(page.locator('[data-test="mobile-nav-home"]')).toBeVisible();
+      await expect(page.locator('[data-test="mobile-nav-contact-us"]')).toBeVisible();
+
+      // Should NOT see admin link for unauthenticated users
+      await expect(page.locator('[data-test="mobile-nav-admin"]')).not.toBeVisible();
+
+      // Close mobile menu
+      await page.keyboard.press('Escape');
+    } else {
+      // Desktop: Check navigation items directly
+      await expect(page.getByText('Home')).toBeVisible();
+      await expect(page.getByText('Contact Us')).toBeVisible();
+
+      // Should NOT see admin link for unauthenticated users
+      await expect(page.getByText('Admin')).not.toBeVisible();
+    }
+
+    // Should see sign in button (available on both mobile and desktop)
+    await expect(page.locator('[data-test="sign-in-button"]').first()).toBeVisible();
   });
 
   // Note: For actual sign-in testing with AWS Amplify, you'd need to:

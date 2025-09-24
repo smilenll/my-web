@@ -60,7 +60,7 @@ export function MainNav() {
     <header className={navigationClass}>
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2">
+        <Link href="/" className="flex items-center space-x-2" data-test="site-logo">
           <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center">
             <span className="text-primary-foreground font-bold text-sm">MW</span>
           </div>
@@ -111,23 +111,23 @@ export function MainNav() {
 
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center space-x-2">
-          <ThemeToggle />
+          <ThemeToggle data-test="theme-toggle" />
           <UserMenu />
         </div>
 
         {/* Mobile Menu */}
         <div className="md:hidden flex items-center space-x-2">
-          <ThemeToggle />
+          <ThemeToggle data-test="theme-toggle-mobile" />
           <UserMenu />
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-9 w-9">
+              <Button variant="ghost" size="icon" className="h-9 w-9" data-test="mobile-menu-button">
                 <Menu className="h-4 w-4" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-              <div className="flex flex-col space-y-4 mt-6">
+            <SheetContent side="right" className="w-[300px] sm:w-[400px]" data-test="mobile-menu">
+              <div className="flex flex-col space-y-4 mt-6" data-test="mobile-nav-items">
                 {navigationItems.map((item) => (
                   <Link
                     key={item.name}
@@ -139,6 +139,7 @@ export function MainNav() {
                         ? 'text-primary bg-primary/10'
                         : 'text-muted-foreground'
                     )}
+                    data-test={`mobile-nav-${item.name.toLowerCase().replace(' ', '-')}`}
                   >
                     {item.name}
                   </Link>
@@ -155,6 +156,7 @@ export function MainNav() {
                         ? 'text-primary bg-primary/10'
                         : 'text-muted-foreground'
                     )}
+                    data-test="mobile-nav-admin"
                   >
                     Admin
                   </Link>

@@ -25,7 +25,7 @@ export function HeroSection({
   secondaryAction = { text: "Learn More", href: "#features" }
 }: HeroSectionProps) {
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/20">
+    <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/20" data-test="hero-section">
       <div className="container mx-auto px-4 py-32">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           {/* Hero Badge */}

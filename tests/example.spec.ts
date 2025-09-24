@@ -6,20 +6,43 @@ test('homepage loads correctly', async ({ page }) => {
   // Check that the page title is correct
   await expect(page).toHaveTitle(/MyWeb/);
 
-  // Check that the main navigation is visible (use more specific selector)
+  // Check that the main navigation is visible (use data-test attributes)
   await expect(page.getByRole('banner')).toBeVisible();
-  await expect(page.locator('header').getByText('MyWeb')).toBeVisible();
+  await expect(page.locator('[data-test="site-logo"]')).toBeVisible();
 
   // Check that hero section is visible
-  await expect(page.getByText('Welcome to MyWeb')).toBeVisible();
+  await expect(page.locator('[data-test="hero-section"]')).toBeVisible();
 
-  // Check that navigation items are present (use navigation role)
-  await expect(page.getByRole('link', { name: 'Home' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Contact Us' })).toBeVisible();
+  // Check that navigation items are present
+  // On mobile, navigation items are in a hamburger menu
+  const isMobile = await page.locator('[data-test="mobile-menu-button"]').isVisible();
 
-  // Check theme toggle is present
-  await expect(page.getByRole('button', { name: /toggle theme/i })).toBeVisible();
+  if (isMobile) {
+    // Open mobile menu first
+    await page.locator('[data-test="mobile-menu-button"]').click();
+    await expect(page.locator('[data-test="mobile-menu"]')).toBeVisible();
 
-  // Check user menu is present (first one - desktop version)
-  await expect(page.getByRole('button', { name: 'Sign in' }).first()).toBeVisible();
+    // Check mobile navigation items
+    await expect(page.locator('[data-test="mobile-nav-home"]')).toBeVisible();
+    await expect(page.locator('[data-test="mobile-nav-contact-us"]')).toBeVisible();
+
+    // Close mobile menu
+    await page.keyboard.press('Escape');
+  } else {
+    // Desktop navigation
+    await expect(page.getByRole('link', { name: 'Home' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Contact Us' })).toBeVisible();
+  }
+
+  // Check theme toggle is present (different selectors for mobile/desktop)
+  if (isMobile) {
+    await expect(page.locator('[data-test="theme-toggle-mobile"]')).toBeVisible();
+  } else {
+    await expect(page.locator('[data-test="theme-toggle"]')).toBeVisible();
+  }
+
+  // Check user menu is present (there are both mobile and desktop versions)
+  // At least one should be visible, but mobile versions might be conditionally hidden by CSS
+  const visibleSignInButton = page.locator('[data-test="sign-in-button"]:visible').first();
+  await expect(visibleSignInButton).toBeVisible();
 });
