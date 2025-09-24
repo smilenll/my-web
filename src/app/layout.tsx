@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MyWeb - Modern Web Applications",
+  title: "SmiL - Modern Web Applications",
   description: "Build amazing web experiences with modern technology. Fast, secure, and scalable solutions.",
 };
 

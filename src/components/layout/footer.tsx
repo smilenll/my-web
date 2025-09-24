@@ -22,7 +22,7 @@ const footerLinks = {
 const socialLinks = [
   { name: 'Twitter', href: '#', icon: Twitter },
   { name: 'GitHub', href: '#', icon: Github },
-  { name: 'Email', href: 'mailto:hello@myweb.com', icon: Mail },
+  { name: 'Email', href: 'mailto:smilenlyubenov@gmail.com', icon: Mail },
 ];
 
 export function Footer() {
@@ -114,13 +114,13 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="text-muted-foreground text-sm mb-4 md:mb-0">
-            © {new Date().getFullYear()} MyWeb. All rights reserved.
+            © {new Date().getFullYear()} SmiL. All rights reserved.
           </div>
 
           <div className="flex items-center text-muted-foreground text-sm">
             <span>Made with</span>
             <Heart className="h-4 w-4 mx-1 text-red-500" />
-            <span>by the MyWeb team</span>
+            <span>by the SmiL team</span>
           </div>
         </div>
       </div>

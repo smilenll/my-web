@@ -7,7 +7,7 @@ export default function PortfolioPage() {
       <HeroSection
         title="Smilen Lyubenov"
         subtitle="Full Stack Developer"
-        description="Passionate software developer with 8+ years of experience building scalable web and mobile applications. Expertise in React, TypeScript, Go, and modern development practices."
+        description="Full-stack developer with experience in startup, product, and service companies. Skilled in visualizing complex data, optimizing system performance, and maintaining scalable architecture. Strong background in team collaboration, project planning, and mentoring."
         primaryAction={{ text: "Contact Me", href: "mailto:smilenlyubenov@gmail.com" }}
         secondaryAction={{ text: "LinkedIn", href: "https://linkedin.com/in/smilenll/" }}
       />

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
@@ -63,10 +64,14 @@ export function MainNav() {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2" data-test="site-logo">
-          <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-sm">MW</span>
-          </div>
-          <span className="font-bold text-lg">MyWeb</span>
+          <Image
+            src="/GreenSMiL.png"
+            alt="SmiL Logo"
+            width={32}
+            height={32}
+            className="h-8 w-8 rounded-lg object-cover"
+          />
+          <span className="font-bold text-lg">SmiL</span>
         </Link>
 
         {/* Desktop Navigation */}
