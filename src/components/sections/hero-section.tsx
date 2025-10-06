@@ -56,15 +56,15 @@ export function HeroSection({
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button asChild size="lg" className="text-lg px-8 py-6 h-auto">
-              <a href={primaryAction.href} className="flex items-center space-x-2">
+            <Button asChild size="lg" className="text-lg px-8 py-6 h-auto w-full sm:w-auto min-w-[200px]">
+              <a href={primaryAction.href} className="flex items-center justify-center gap-2">
                 <span>{primaryAction.text}</span>
                 <ArrowRight className="h-5 w-5" />
               </a>
             </Button>
 
-            <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6 h-auto">
-              <a href={secondaryAction.href} className="flex items-center space-x-2">
+            <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6 h-auto w-full sm:w-auto min-w-[200px]">
+              <a href={secondaryAction.href} className="flex items-center justify-center gap-2">
                 <PlayCircle className="h-5 w-5" />
                 <span>{secondaryAction.text}</span>
               </a>
