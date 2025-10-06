@@ -104,7 +104,7 @@ export default function PortfolioPage() {
               </div>
               <div>
                 <h4 className="font-medium">Technical University of Varna</h4>
-                <p className="text-sm text-muted-foreground">Bachelor's, Naval Architecture & Marine Engineering</p>
+                <p className="text-sm text-muted-foreground">Bachelor&apos;s, Naval Architecture & Marine Engineering</p>
                 <p className="text-xs text-muted-foreground">September 2013 - September 2017</p>
               </div>
             </div>
@@ -136,7 +136,7 @@ export default function PortfolioPage() {
 
       <ContentSection>
         <div className="text-center">
-          <h2 className="text-3xl font-bold mb-4">Let's Work Together</h2>
+          <h2 className="text-3xl font-bold mb-4">Let&apos;s Work Together</h2>
           <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
             Based in Atlanta, GA. Available for full-time opportunities and consulting projects.
           </p>
