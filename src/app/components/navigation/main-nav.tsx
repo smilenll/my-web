@@ -14,8 +14,8 @@ import { useAuth } from '@/contexts/auth-context';
 import { cn } from '@/lib/utils';
 
 const navigationItems = [
-  { name: 'Portfolio', href: '/' },
-  { name: 'Contact Us', href: '/contact' },
+  { name: 'Portfolio', href: '/', testId: 'nav-portfolio' },
+  { name: 'Contact Me', href: '/contact', testId: 'nav-contact-us' },
 ];
 
 export function MainNav() {
@@ -128,18 +128,19 @@ export function MainNav() {
           <UserMenu />
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-9 w-9">
+              <Button variant="ghost" size="icon" className="h-9 w-9" data-test="mobile-menu-button">
                 <Menu className="h-4 w-4" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+            <SheetContent side="right" className="w-[300px] sm:w-[400px]" data-test="mobile-menu">
               <div className="flex flex-col space-y-4 mt-6">
                 {navigationItems.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
+                    data-test={`mobile-${item.testId}`}
                     className={cn(
                       'text-sm font-medium transition-colors hover:text-primary px-3 py-2 rounded-md',
                       pathname === item.href
@@ -156,6 +157,7 @@ export function MainNav() {
                   <Link
                     href="/admin"
                     onClick={() => setIsMobileMenuOpen(false)}
+                    data-test="mobile-nav-admin"
                     className={cn(
                       'text-sm font-medium transition-colors hover:text-primary px-3 py-2 rounded-md',
                       pathname === '/admin'
