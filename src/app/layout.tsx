@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Press_Start_2P } from "next/font/google";
 import "./globals.css";
-import AmplifyClientConfig from "./AmplifyClientConfig";
+import AmplifyClientConfig from "./amplify-client-config";
 import { MainNav, Footer } from '@/components/layout';
 import { AuthProvider } from '@/contexts/auth-context';
 import { CookieConsent } from '@/components/ui/cookie-consent';

@@ -1,5 +1,4 @@
-import { HeroSection, ContentSection } from '@/components/sections';
-import { AdminSection } from '@/app/components/admin-section';
+import { HeroSection, ContentSection, AdminSection } from '@/components/sections';
 import { SkillCard } from '@/components/ui/skill-card';
 
 const frontendTechnologies = [
@@ -22,18 +21,19 @@ const backendTechnologies = [
   { name: 'MySQL', logo: '/technologies/mysql.svg', website: 'https://www.mysql.com/' },
   { name: 'PostgreSQL', logo: '/technologies/postgresql.svg', website: 'https://www.postgresql.org/' },
   { name: 'Node.js', logo: '/technologies/nodejs.svg', website: 'https://nodejs.org/' },
+  { name: 'Postman', logo: '/technologies/postman.svg', website: 'https://www.postman.com/' },
 ];
 
 const toolsTechnologies = [
   { name: 'Docker', logo: '/technologies/docker.svg', website: 'https://www.docker.com/' },
   { name: 'AWS', logo: '/technologies/aws.svg', website: 'https://aws.amazon.com/' },
-   { name: 'JIRA', logo: '/technologies/jira.svg', website: 'https://www.atlassian.com/software/jira' },
+  { name: 'JIRA', logo: '/technologies/jira.svg', website: 'https://www.atlassian.com/software/jira' },
   { name: 'Cloudflare', logo: '/technologies/cloudflare.svg', website: 'https://www.cloudflare.com/' },
   { name: 'Git', logo: '/technologies/git.svg', website: 'https://git-scm.com/' },
   { name: 'Linux', logo: '/technologies/linux.svg', website: 'https://www.linux.org/' },
-   { name: 'Claude Code', logo: '/technologies/claude.png', website: 'https://docs.claude.com/en/docs/claude-code' },
+  { name: 'Figma', logo: '/technologies/figma.svg', website: 'https://www.figma.com/' },
+  { name: 'Claude Code', logo: '/technologies/claude.png', website: 'https://docs.claude.com/en/docs/claude-code' },
   { name: 'Cursor', logo: '/technologies/cursor.svg', website: 'https://cursor.com/' },
-
 ];
 
 export default function PortfolioPage() {
@@ -77,12 +77,12 @@ export default function PortfolioPage() {
               <span className="text-sm text-muted-foreground">June 2024 - July 2025</span>
             </div>
             <p className="text-primary font-medium mb-3">Dermatic Health - Boston, MA, USA</p>
-            <ul className="text-muted-foreground space-y-1 text-sm">
-              <li>• Building mobile and web apps from UI designs, ensuring smooth user experience</li>
-              <li>• Integrating third-party identity APIs to authenticate and manage users, groups, and permissions</li>
-              <li>• Owning a core system enabling users to create complex custom forms for data collection</li>
-              <li>• Developing APIs to manage data and automate workflows effectively</li>
-              <li>• Migrating to React Native, enhancing mobile performance and UX</li>
+            <ul className="text-muted-foreground space-y-1 text-sm list-disc list-inside">
+              <li>Building mobile and web apps from UI designs, ensuring smooth user experience</li>
+              <li>Integrating third-party identity APIs to authenticate and manage users, groups, and permissions</li>
+              <li>Owning a core system enabling users to create complex custom forms for data collection</li>
+              <li>Developing APIs to manage data and automate workflows effectively</li>
+              <li>Migrating to React Native, enhancing mobile performance and UX</li>
             </ul>
           </div>
 
@@ -92,11 +92,11 @@ export default function PortfolioPage() {
               <span className="text-sm text-muted-foreground">February 2019 - May 2024</span>
             </div>
             <p className="text-primary font-medium mb-3">AtScale - Boston, MA, USA</p>
-            <ul className="text-muted-foreground space-y-1 text-sm">
-              <li>• Owning core integration tools, connecting AtScale and third-party systems</li>
-              <li>• Creating test plans and implementing automated tests to enable CI/CD workflows</li>
-              <li>• Acting as Deputy Team Leader, leading Agile ceremonies and mentoring junior developers</li>
-              <li>• Collaborating cross-functionally with Engineering, DevOps, QA, and Data Science teams</li>
+            <ul className="text-muted-foreground space-y-1 text-sm list-disc list-inside">
+              <li>Owning core integration tools, connecting AtScale and third-party systems</li>
+              <li>Creating test plans and implementing automated tests to enable CI/CD workflows</li>
+              <li>Acting as Deputy Team Leader, leading Agile ceremonies and mentoring junior developers</li>
+              <li>Collaborating cross-functionally with Engineering, DevOps, QA, and Data Science teams</li>
             </ul>
           </div>
 
@@ -106,10 +106,10 @@ export default function PortfolioPage() {
               <span className="text-sm text-muted-foreground">January 2017 - September 2018</span>
             </div>
             <p className="text-primary font-medium mb-3">Next-Stream - Sofia, Bulgaria</p>
-            <ul className="text-muted-foreground space-y-1 text-sm">
-              <li>• Developing data APIs and optimizing system structure</li>
-              <li>• Reduced build time by 15% through system deployment distribution</li>
-              <li>• Integrating external services</li>
+            <ul className="text-muted-foreground space-y-1 text-sm list-disc list-inside">
+              <li>Developing data APIs and optimizing system structure</li>
+              <li>Reduced build time by 15% through system deployment distribution</li>
+              <li>Integrating external services</li>
             </ul>
           </div>
 
@@ -119,12 +119,12 @@ export default function PortfolioPage() {
               <span className="text-sm text-muted-foreground">October 2017 - December 2023</span>
             </div>
             <p className="text-primary font-medium mb-3">Web4U - Sofia, Bulgaria</p>
-            <ul className="text-muted-foreground space-y-1 text-sm">
-              <li>• Building a user-friendly client-side interfaces for 10+ projects</li>
-              <li>• Developing eCommerce web applications and CRMs using the MVC design pattern</li>
-              <li>• Participating in project planning and estimations</li>
-              <li>• Communicating with clients</li>
-              <li>• Designing front-end, back-end, and databases</li>
+            <ul className="text-muted-foreground space-y-1 text-sm list-disc list-inside">
+              <li>Building a user-friendly client-side interfaces for 10+ projects</li>
+              <li>Developing eCommerce web applications and CRMs using the MVC design pattern</li>
+              <li>Participating in project planning and estimations</li>
+              <li>Communicating with clients</li>
+              <li>Designing front-end, back-end, and databases</li>
             </ul>
           </div>
         </div>

@@ -1,7 +1,5 @@
-'use client';
-
 import { ArrowRight, PlayCircle } from 'lucide-react';
-import { Button } from '@/app/components/ui/button';
+import { Button } from '@/components/ui';
 import Image from 'next/image';
 
 interface HeroSectionProps {
@@ -29,17 +27,18 @@ export function HeroSection({
     <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/20" data-test="hero-section">
       <div className="container mx-auto px-4 py-32">
         <div className="max-w-4xl mx-auto text-center space-y-8">
+          {/* Hero Badge/Logo */}
           <Image
             src="/GreenSMiL.png"
             alt="Smilen Lyubenov"
             width={160}
             height={160}
-            className="w-32 h-32 md:w-40 md:h-40 not-only:object-cover mx-auto"
+            className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover mx-auto"
             priority
           />
 
           {/* Main Title */}
-          <h1 className="font-display text-2xl md:text-4xl lg:text-5xl tracking-tight leading-relaxed">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight">
             <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
               {title}
             </span>

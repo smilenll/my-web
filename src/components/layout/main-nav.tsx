@@ -59,20 +59,21 @@ export function MainNav() {
 
   return (
     <header className={navigationClass}>
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2" data-test="site-logo">
-          <Image
-            src="/GreenSMiL.png"
-            alt="SmiL Logo"
-            width={32}
-            height={32}
-            className="h-8 w-8 rounded-lg object-cover"
-          />
-          <span className="font-bold text-lg">SmiL</span>
-        </Link>
+      <div className="container mx-auto px-4 h-16 flex items-center">
+        {/* Logo - Left side with fixed width */}
+        <div className="flex items-center flex-1">
+          <Link href="/" className="flex items-center space-x-2" data-test="site-logo">
+            <Image
+              src="/GreenSMiL.png"
+              alt="SmiL Logo"
+              width={48}
+              height={48}
+              className="h-10 w-10 md:h-12 md:w-12 rounded-lg object-cover"
+            />
+          </Link>
+        </div>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Navigation - Centered */}
         <NavigationMenu className="hidden md:flex">
           <NavigationMenuList className="flex space-x-6">
             {navigationItems.map((item) => (
@@ -114,8 +115,8 @@ export function MainNav() {
           </NavigationMenuList>
         </NavigationMenu>
 
-        {/* Desktop Actions */}
-        <div className="hidden md:flex items-center space-x-2">
+        {/* Desktop Actions - Right side with fixed width matching left */}
+        <div className="hidden md:flex items-center space-x-2 flex-1 justify-end">
           <ThemeToggle data-test="theme-toggle" />
           <UserMenu />
         </div>
