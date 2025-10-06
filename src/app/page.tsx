@@ -18,7 +18,6 @@ const backendTechnologies = [
   { name: 'PHP', logo: '/technologies/php.svg', website: 'https://www.php.net/' },
   { name: 'NestJS', logo: '/technologies/nestjs.svg', website: 'https://nestjs.com/' },
   { name: 'Laravel', logo: '/technologies/laravel.svg', website: 'https://laravel.com/' },
-  { name: 'NestJS', logo: '/technologies/nestjs.svg', website: 'https://nestjs.com/' },
   { name: 'Next.js', logo: '/technologies/nextjs.svg', website: 'https://nextjs.org/' },
   { name: 'MySQL', logo: '/technologies/mysql.svg', website: 'https://www.mysql.com/' },
   { name: 'PostgreSQL', logo: '/technologies/postgresql.svg', website: 'https://www.postgresql.org/' },
@@ -113,6 +112,21 @@ export default function PortfolioPage() {
               <li>• Integrating external services</li>
             </ul>
           </div>
+
+          <div className="border-l-4 border-primary pl-6">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
+              <h3 className="text-xl font-semibold">Co-founder & Full Stack Developer</h3>
+              <span className="text-sm text-muted-foreground">October 2017 - December 2023</span>
+            </div>
+            <p className="text-primary font-medium mb-3">Web4U - Sofia, Bulgaria</p>
+            <ul className="text-muted-foreground space-y-1 text-sm">
+              <li>• Building a user-friendly client-side interfaces for 10+ projects</li>
+              <li>• Developing eCommerce web applications and CRMs using the MVC design pattern</li>
+              <li>• Participating in project planning and estimations</li>
+              <li>• Communicating with clients</li>
+              <li>• Designing front-end, back-end, and databases</li>
+            </ul>
+          </div>
         </div>
       </ContentSection>
 
@@ -128,7 +142,7 @@ export default function PortfolioPage() {
               </div>
               <div>
                 <h4 className="font-medium">Technical University of Varna</h4>
-                <p className="text-sm text-muted-foreground">Bachelor&apos;s, Naval Architecture & Marine Engineering</p>
+                <p className="text-sm text-muted-foreground">Bachelor&apos;s, Computer Science</p>
                 <p className="text-xs text-muted-foreground">September 2013 - September 2017</p>
               </div>
             </div>
