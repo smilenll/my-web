@@ -86,7 +86,7 @@ const components = {
   },
   SignIn: {
     Header() {
-      return <h2>Sign In to MyWeb</h2>;
+      return <h2>Sign In to SmiL</h2>;
     },
     Footer() {
       return <p>Need help? Contact support</p>;

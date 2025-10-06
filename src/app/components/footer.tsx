@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Github, Twitter, Mail, Heart } from 'lucide-react';
 
 const footerLinks = {
@@ -22,7 +23,7 @@ const footerLinks = {
 const socialLinks = [
   { name: 'Twitter', href: '#', icon: Twitter },
   { name: 'GitHub', href: '#', icon: Github },
-  { name: 'Email', href: 'mailto:hello@myweb.com', icon: Mail },
+  { name: 'Email', href: 'mailto:smilenlyubenov@gmail.com', icon: Mail },
 ];
 
 export function Footer() {
@@ -34,14 +35,18 @@ export function Footer() {
           {/* Logo and Description */}
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center space-x-2 mb-4">
-              <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">MW</span>
-              </div>
-              <span className="font-bold text-lg">MyWeb</span>
+              <Image
+                src="/GreenSMiL.png"
+                alt="SmiL Logo"
+                width={32}
+                height={32}
+                className="h-8 w-8 rounded-lg object-cover"
+              />
+              <span className="font-bold text-lg">SmiL</span>
             </Link>
             <p className="text-muted-foreground mb-4 max-w-md">
-              Building amazing web experiences with modern technology.
-              Fast, secure, and scalable solutions for your business needs.
+              Creating innovative digital solutions with passion and expertise.
+              Transforming ideas into exceptional web experiences.
             </p>
 
             {/* Social Links */}
@@ -114,13 +119,13 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="text-muted-foreground text-sm mb-4 md:mb-0">
-            © {new Date().getFullYear()} MyWeb. All rights reserved.
+            © {new Date().getFullYear()} SmiL. All rights reserved.
           </div>
 
           <div className="flex items-center text-muted-foreground text-sm">
-            <span>Made with</span>
-            <Heart className="h-4 w-4 mx-1 text-red-500" />
-            <span>by the MyWeb team</span>
+            <span>Crafted with</span>
+            <Heart className="h-4 w-4 mx-1 text-green-500" />
+            <span>by SmiL</span>
           </div>
         </div>
       </div>

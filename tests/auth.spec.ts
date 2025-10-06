@@ -43,7 +43,7 @@ test.describe('Authentication', () => {
       await expect(page.locator('[data-test="mobile-menu"]')).toBeVisible();
 
       // Should see basic navigation items in mobile menu
-      await expect(page.locator('[data-test="mobile-nav-home"]')).toBeVisible();
+      await expect(page.locator('[data-test="mobile-nav-portfolio"]')).toBeVisible();
       await expect(page.locator('[data-test="mobile-nav-contact-us"]')).toBeVisible();
 
       // Should NOT see admin link for unauthenticated users
@@ -52,12 +52,13 @@ test.describe('Authentication', () => {
       // Close mobile menu
       await page.keyboard.press('Escape');
     } else {
-      // Desktop: Check navigation items directly
-      await expect(page.getByText('Home')).toBeVisible();
-      await expect(page.getByText('Contact Us')).toBeVisible();
+      // Desktop: Check navigation items directly - scope to banner to avoid conflicts
+      const nav = page.getByRole('banner');
+      await expect(nav.getByText('Portfolio')).toBeVisible();
+      await expect(nav.getByText('Contact Me')).toBeVisible();
 
       // Should NOT see admin link for unauthenticated users
-      await expect(page.getByText('Admin')).not.toBeVisible();
+      await expect(nav.getByText('Admin')).not.toBeVisible();
     }
 
     // Should see sign in button (available on both mobile and desktop)

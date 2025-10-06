@@ -4,7 +4,7 @@ test('homepage loads correctly', async ({ page }) => {
   await page.goto('/');
 
   // Check that the page title is correct
-  await expect(page).toHaveTitle(/MyWeb/);
+  await expect(page).toHaveTitle("SmiL");
 
   // Check that the main navigation is visible (use data-test attributes)
   await expect(page.getByRole('banner')).toBeVisible();
@@ -23,15 +23,16 @@ test('homepage loads correctly', async ({ page }) => {
     await expect(page.locator('[data-test="mobile-menu"]')).toBeVisible();
 
     // Check mobile navigation items
-    await expect(page.locator('[data-test="mobile-nav-home"]')).toBeVisible();
+    await expect(page.locator('[data-test="mobile-nav-portfolio"]')).toBeVisible();
     await expect(page.locator('[data-test="mobile-nav-contact-us"]')).toBeVisible();
 
     // Close mobile menu
     await page.keyboard.press('Escape');
   } else {
-    // Desktop navigation
-    await expect(page.getByRole('link', { name: 'Home' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Contact Us' })).toBeVisible();
+    // Desktop navigation - scope to the navigation menu to avoid conflicts with page content
+    const nav = page.getByRole('banner');
+    await expect(nav.getByRole('link', { name: 'Portfolio' })).toBeVisible();
+    await expect(nav.getByRole('link', { name: 'Contact Me' })).toBeVisible();
   }
 
   // Check theme toggle is present (different selectors for mobile/desktop)

@@ -18,7 +18,7 @@ interface HeroSectionProps {
 }
 
 export function HeroSection({
-  title = "Welcome to MyWeb",
+  title = "Welcome to SmiL",
   subtitle = "Build amazing experiences with modern technology",
   description = "Create stunning web applications with our cutting-edge platform. Fast, secure, and scalable solutions for your business needs.",
   primaryAction = { text: "Get Started", href: "/contact" },
@@ -29,9 +29,7 @@ export function HeroSection({
       <div className="container mx-auto px-4 py-32">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           {/* Hero Badge */}
-          <div className="inline-flex items-center rounded-full border border-border bg-muted/50 px-3 py-1 text-xs font-medium">
-            🚀 Now available with enhanced features
-          </div>
+         
 
           {/* Main Title */}
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight">

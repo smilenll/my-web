@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
@@ -13,8 +14,8 @@ import { useAuth } from '@/contexts/auth-context';
 import { cn } from '@/lib/utils';
 
 const navigationItems = [
-  { name: 'Home', href: '/' },
-  { name: 'Contact Us', href: '/contact' },
+  { name: 'Portfolio', href: '/', testId: 'nav-portfolio' },
+  { name: 'Contact Me', href: '/contact', testId: 'nav-contact-us' },
 ];
 
 export function MainNav() {
@@ -63,10 +64,14 @@ export function MainNav() {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2" data-test="site-logo">
-          <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-sm">MW</span>
-          </div>
-          <span className="font-bold text-lg">MyWeb</span>
+          <Image
+            src="/GreenSMiL.png"
+            alt="SmiL Logo"
+            width={32}
+            height={32}
+            className="h-8 w-8 rounded-lg object-cover"
+          />
+          <span className="font-bold text-lg">SmiL</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -123,18 +128,19 @@ export function MainNav() {
           <UserMenu />
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-9 w-9">
+              <Button variant="ghost" size="icon" className="h-9 w-9" data-test="mobile-menu-button">
                 <Menu className="h-4 w-4" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+            <SheetContent side="right" className="w-[300px] sm:w-[400px]" data-test="mobile-menu">
               <div className="flex flex-col space-y-4 mt-6">
                 {navigationItems.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
+                    data-test={`mobile-${item.testId}`}
                     className={cn(
                       'text-sm font-medium transition-colors hover:text-primary px-3 py-2 rounded-md',
                       pathname === item.href
@@ -151,6 +157,7 @@ export function MainNav() {
                   <Link
                     href="/admin"
                     onClick={() => setIsMobileMenuOpen(false)}
+                    data-test="mobile-nav-admin"
                     className={cn(
                       'text-sm font-medium transition-colors hover:text-primary px-3 py-2 rounded-md',
                       pathname === '/admin'
