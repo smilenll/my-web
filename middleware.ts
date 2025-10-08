@@ -1,7 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+import { createServerRunner } from '@aws-amplify/adapter-nextjs';
+import { getCurrentUser, fetchUserAttributes } from 'aws-amplify/auth/server';
+import awsExports from './src/aws-exports';
+
+const { runWithAmplifyServerContext } = createServerRunner({
+  config: awsExports,
+});
 
 // Define protected routes that require authentication
 const protectedPaths = ['/admin', '/profile'];
+
+// Define admin-only routes
+const adminPaths = ['/admin'];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -15,16 +26,50 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // For now, let client-side auth handle protection
-  // Server-side auth can be added later when needed
   const isProtectedPath = protectedPaths.some(path => pathname.startsWith(path));
+  const isAdminPath = adminPaths.some(path => pathname.startsWith(path));
 
   if (isProtectedPath) {
-    // Add a header to indicate this is a protected route
-    // The client-side can use this to redirect if not authenticated
-    const response = NextResponse.next();
-    response.headers.set('x-protected-route', 'true');
-    return response;
+    try {
+      const authenticated = await runWithAmplifyServerContext({
+        nextServerContext: { cookies },
+        operation: async (contextSpec) => {
+          try {
+            const user = await getCurrentUser(contextSpec);
+
+            // If this is an admin path, check for admin role
+            if (isAdminPath && user) {
+              const attributes = await fetchUserAttributes(contextSpec);
+              const userGroups = attributes['cognito:groups'];
+
+              if (typeof userGroups === 'string') {
+                const groups = userGroups.split(',');
+                return groups.includes('admin');
+              }
+              return false;
+            }
+
+            return !!user;
+          } catch (error) {
+            return false;
+          }
+        },
+      });
+
+      if (!authenticated) {
+        // Redirect to home page if not authenticated
+        const url = request.nextUrl.clone();
+        url.pathname = '/';
+        url.searchParams.set('redirect', pathname);
+        return NextResponse.redirect(url);
+      }
+    } catch (error) {
+      console.error('Auth middleware error:', error);
+      // Redirect to home on error
+      const url = request.nextUrl.clone();
+      url.pathname = '/';
+      return NextResponse.redirect(url);
+    }
   }
 
   return NextResponse.next();

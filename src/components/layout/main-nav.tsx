@@ -12,7 +12,7 @@ import { useAuth } from '@/contexts/auth-context';
 import { cn } from '@/lib/utils';
 
 const navigationItems = [
-  { name: 'Portfolio', href: '/' },
+  { name: 'Home', href: '/' },
   { name: 'Contact Me', href: '/contact' },
 ];
 
