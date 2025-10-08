@@ -12,7 +12,7 @@ const footerLinks = {
 const socialLinks = [
   { name: 'Twitter', href: '#', icon: Twitter },
   { name: 'GitHub', href: '#', icon: Github },
-  { name: 'Email', href: 'mailto:smilenlyubenov@gmail.com', icon: Mail },
+  { name: 'Email', href: `mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`, icon: Mail },
 ];
 
 export function Footer() {
@@ -75,7 +75,7 @@ export function Footer() {
         <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center text-muted-foreground text-sm">
             <span>Crafted with</span>
-            <Heart className="h-4 w-4 mx-1 text-green-500" />
+            <Heart className="h-4 w-4 mx-1 text-green-800" />
             <span>by SmiL</span>
           </div>
 

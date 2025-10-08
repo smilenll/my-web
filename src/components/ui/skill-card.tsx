@@ -1,10 +1,10 @@
-import Image from 'next/image';
+import Image from "next/image";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
+} from "@/components/ui/tooltip";
 
 interface Technology {
   name: string;
@@ -29,9 +29,7 @@ export function SkillCard({ icon, title, technologies }: SkillCardProps) {
         <div className="grid grid-cols-3 gap-4">
           {technologies.map((tech) => {
             const content = (
-              <div
-                className="flex items-center justify-center p-3 rounded-md border border-border/50 hover:border-primary/50 transition-colors"
-              >
+              <div className="flex flex-col items-center justify-center p-3 rounded-md border border-border/50 hover:border-primary/50 transition-colors">
                 <div className="relative w-12 h-12">
                   <Image
                     src={tech.logo}
@@ -40,6 +38,7 @@ export function SkillCard({ icon, title, technologies }: SkillCardProps) {
                     className="object-contain"
                   />
                 </div>
+                <p className="lg:hidden text-xs text-center">{tech.name}</p>
               </div>
             );
 
@@ -57,9 +56,7 @@ export function SkillCard({ icon, title, technologies }: SkillCardProps) {
                       {content}
                     </a>
                   ) : (
-                    <div id={tech.name}>
-                      {content}
-                    </div>
+                    <div id={tech.name}>{content}</div>
                   )}
                 </TooltipTrigger>
                 <TooltipContent>
