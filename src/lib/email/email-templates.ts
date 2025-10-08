@@ -1,8 +1,26 @@
 import type { ContactFormData } from './email-provider';
 
+/**
+ * Escape HTML to prevent XSS attacks
+ */
+function escapeHtml(unsafe: string): string {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 // Email template for admin notification (you receive this)
 export function generateContactEmailHtml(data: ContactFormData): string {
   const { name, email, subject, message } = data;
+
+  // Escape all user inputs to prevent XSS
+  const safeName = escapeHtml(name);
+  const safeEmail = escapeHtml(email);
+  const safeSubject = escapeHtml(subject);
+  const safeMessage = escapeHtml(message);
 
   return `
 <!DOCTYPE html>
@@ -21,24 +39,24 @@ export function generateContactEmailHtml(data: ContactFormData): string {
   <div style="background: #f9f9f9; padding: 30px; border: 1px solid #ddd; border-top: none; border-radius: 0 0 10px 10px;">
     <div style="margin-bottom: 20px;">
       <strong style="color: #14532d; display: block; margin-bottom: 5px;">Name:</strong>
-      <p style="margin: 0; padding: 10px; background: white; border-radius: 5px; border-left: 3px solid #14532d;">${name}</p>
+      <p style="margin: 0; padding: 10px; background: white; border-radius: 5px; border-left: 3px solid #14532d;">${safeName}</p>
     </div>
 
     <div style="margin-bottom: 20px;">
       <strong style="color: #14532d; display: block; margin-bottom: 5px;">Email:</strong>
       <p style="margin: 0; padding: 10px; background: white; border-radius: 5px; border-left: 3px solid #14532d;">
-        <a href="mailto:${email}" style="color: #14532d; text-decoration: none;">${email}</a>
+        <a href="mailto:${safeEmail}" style="color: #14532d; text-decoration: none;">${safeEmail}</a>
       </p>
     </div>
 
     <div style="margin-bottom: 20px;">
       <strong style="color: #14532d; display: block; margin-bottom: 5px;">Subject:</strong>
-      <p style="margin: 0; padding: 10px; background: white; border-radius: 5px; border-left: 3px solid #14532d;">${subject}</p>
+      <p style="margin: 0; padding: 10px; background: white; border-radius: 5px; border-left: 3px solid #14532d;">${safeSubject}</p>
     </div>
 
     <div style="margin-bottom: 20px;">
       <strong style="color: #14532d; display: block; margin-bottom: 5px;">Message:</strong>
-      <div style="margin: 0; padding: 15px; background: white; border-radius: 5px; border-left: 3px solid #14532d; white-space: pre-wrap;">${message}</div>
+      <div style="margin: 0; padding: 15px; background: white; border-radius: 5px; border-left: 3px solid #14532d; white-space: pre-wrap;">${safeMessage}</div>
     </div>
 
     <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
@@ -79,6 +97,7 @@ This email was sent from the contact form on greensmil.com
 // Customer confirmation email templates (customer receives this)
 export function generateCustomerConfirmationHtml(data: ContactFormData): string {
   const { name } = data;
+  const safeName = escapeHtml(name);
 
   return `
 <!DOCTYPE html>
@@ -95,7 +114,7 @@ export function generateCustomerConfirmationHtml(data: ContactFormData): string 
   </div>
 
   <div style="background: #f9f9f9; padding: 30px; border: 1px solid #ddd; border-top: none; border-radius: 0 0 10px 10px;">
-    <p style="margin: 0 0 20px 0; font-size: 16px;">Hi ${name},</p>
+    <p style="margin: 0 0 20px 0; font-size: 16px;">Hi ${safeName},</p>
 
     <p style="margin: 0 0 20px 0;">Thank you for reaching out to us through our website. We have received your message and will get back to you as soon as possible.</p>
 

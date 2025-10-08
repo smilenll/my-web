@@ -1,6 +1,6 @@
 import { ContentSection } from '@/components/sections';
 import { ContactForm } from '@/components/forms';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, MapPin } from 'lucide-react';
 
 export default function ContactPage() {
   return (
@@ -35,24 +35,13 @@ export default function ContactPage() {
 
                   <div className="flex items-start space-x-4">
                     <div className="h-10 w-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                      <Phone className="h-5 w-5 text-primary-foreground" />
-                    </div>
-                    <div>
-                      <h4 className="font-medium">Phone</h4>
-                      <p className="text-muted-foreground">+1 (555) 123-4567</p>
-                      <p className="text-muted-foreground">Mon-Fri 9am-6pm EST</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start space-x-4">
-                    <div className="h-10 w-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
                       <MapPin className="h-5 w-5 text-primary-foreground" />
                     </div>
                     <div>
                       <h4 className="font-medium">Office</h4>
                       <p className="text-muted-foreground">
-                        123 Tech Street<br />
-                        San Francisco, CA 94105<br />
+                        250 Pharr Rd NE<br />
+                        Atlanta, GA 30305<br />
                         United States
                       </p>
                     </div>

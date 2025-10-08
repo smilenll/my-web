@@ -28,6 +28,12 @@ export async function getUsersAction(
   paginationToken?: string
 ): Promise<PaginatedUsersResult> {
   try {
+    // Import requireRole dynamically to avoid circular dependencies
+    const { requireRole } = await import('@/lib/auth-server');
+
+    // Require admin role to access this action
+    await requireRole('admin');
+
     const client = new CognitoIdentityProviderClient({
       region: config.aws_cognito_region,
     });
