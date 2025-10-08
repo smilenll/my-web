@@ -3,6 +3,7 @@ import {
   SkillsSection,
   ExperienceSection,
   EducationSection,
+  RecommendationsSection,
   ContactSection,
 } from '@/components/sections';
 
@@ -20,6 +21,7 @@ export default function PortfolioPage() {
       <SkillsSection />
       <ExperienceSection />
       <EducationSection />
+      <RecommendationsSection />
       <ContactSection />
     </>
   );

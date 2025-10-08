@@ -12,7 +12,7 @@ const footerLinks = {
 const socialLinks = [
   { name: 'LinkedIn', href: process.env.NEXT_PUBLIC_LINKEDIN_URL || 'https://linkedin.com/in/smilenll', icon: Linkedin },
   { name: 'GitHub', href: process.env.NEXT_PUBLIC_GITHUB_URL || 'https://github.com/smilenll', icon: Github },
-  { name: 'Email', href: `mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`, icon: Mail },
+  { name: 'Email', href: `mailto:${process.env.SES_INFO_EMAIL}`, icon: Mail },
 ];
 
 export function Footer() {
