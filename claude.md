@@ -2,6 +2,8 @@
 
 A modern full-stack portfolio and web platform built with Next.js, AWS Amplify, and shadcn/ui.
 
+**Live Site**: [greensmil.com](https://greensmil.com)
+
 ## 🚀 Tech Stack
 
 ### Core Framework
@@ -57,6 +59,8 @@ my-web/
 │   │   │   ├── dropdown-menu.tsx
 │   │   │   ├── cookie-consent.tsx
 │   │   │   └── ...
+│   │   ├── forms/                # Form components
+│   │   │   └── contact-form.tsx  # Contact form with validation
 │   │   ├── layout/               # Layout components
 │   │   │   ├── main-nav.tsx
 │   │   │   ├── footer.tsx
@@ -78,10 +82,15 @@ my-web/
 │   │
 │   ├── lib/                      # Utilities & helpers
 │   │   ├── utils.ts              # General utilities
-│   │   └── auth-server.ts        # Server-side auth utilities
+│   │   ├── auth-server.ts        # Server-side auth utilities
+│   │   └── email/                # Email service
+│   │       ├── email-provider.ts # Email provider interface
+│   │       ├── ses-provider.ts   # AWS SES implementation
+│   │       └── email-templates.ts # Email templates
 │   │
 │   ├── actions/                  # Server actions
-│   │   └── user-actions.ts       # User-related actions
+│   │   ├── user-actions.ts       # User-related actions
+│   │   └── contact-actions.ts    # Contact form actions
 │   │
 │   ├── config/                   # Configuration files
 │   │   └── amplify-config.ts     # Amplify configuration
@@ -449,9 +458,16 @@ export async function exampleAction(formData: FormData) {
 
 ### Component Organization
 - `src/components/ui/` - Atomic UI components (buttons, inputs)
+- `src/components/forms/` - Form components with validation
 - `src/components/layout/` - Layout components (nav, footer)
 - `src/components/sections/` - Page sections (hero, content)
 - `src/components/auth/` - Authentication-specific components
+
+### Email Service Architecture
+- **Provider Pattern**: Interface-based email service allowing easy provider switching
+- **AWS SES**: Current implementation (62,000 free emails/month first year)
+- **Server Actions**: Proxy layer between frontend and email service
+- **Functional Approach**: Using functional programming patterns instead of classes
 
 ---
 
@@ -499,6 +515,41 @@ export function Header() {
 
 ### Adding Cookie Consent Banner
 Already implemented in `src/components/ui/cookie-consent.tsx` and included in the root layout.
+
+### Sending Emails via Contact Form
+
+The contact form uses AWS SES with a provider abstraction pattern:
+
+```typescript
+// src/actions/contact-actions.ts
+'use server';
+
+import { sendContactEmail } from '@/actions/contact-actions';
+
+// In your form component
+const result = await sendContactEmail({
+  name: 'John Doe',
+  email: 'john@example.com',
+  subject: 'Project Inquiry',
+  message: 'Hello, I would like to discuss...',
+});
+```
+
+**Environment Variables Required:**
+```env
+AWS_SES_REGION=us-east-1
+AWS_SES_ACCESS_KEY_ID=your_access_key
+AWS_SES_SECRET_ACCESS_KEY=your_secret_key
+AWS_SES_FROM_EMAIL=noreply@greensmil.com
+AWS_SES_TO_EMAIL=hello@greensmil.com
+```
+
+**AWS SES Setup:**
+1. Create an AWS account
+2. Go to AWS SES console
+3. Verify email addresses (both FROM and TO)
+4. Create IAM user with SES permissions
+5. Generate access keys and add to `.env`
 
 ---
 
@@ -584,6 +635,8 @@ git push origin feature/your-feature
 - **Legal Pages**: Privacy Policy and Cookie Policy available
 - **Admin Panel**: Route-protected admin dashboard at `/admin`
 - **Authentication**: AWS Cognito with custom auth context
+- **Email Service**: AWS SES with provider abstraction pattern
+- **Contact Form**: react-hook-form with server-side email sending
 
 ---
 
