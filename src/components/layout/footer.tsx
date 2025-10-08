@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Github, Twitter, Mail, Heart } from 'lucide-react';
+import { Github, Linkedin, Mail, Heart } from 'lucide-react';
 
 const footerLinks = {
   legal: [
@@ -10,8 +10,8 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { name: 'Twitter', href: '#', icon: Twitter },
-  { name: 'GitHub', href: '#', icon: Github },
+  { name: 'LinkedIn', href: process.env.NEXT_PUBLIC_LINKEDIN_URL || 'https://linkedin.com/in/smilenll', icon: Linkedin },
+  { name: 'GitHub', href: process.env.NEXT_PUBLIC_GITHUB_URL || 'https://github.com/smilenll', icon: Github },
   { name: 'Email', href: `mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`, icon: Mail },
 ];
 
