@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Script from 'next/script';
 import { Button } from '@/components/ui';
@@ -9,13 +9,14 @@ import type { ContactFormData } from '@/lib/email/email-provider';
 
 declare global {
   interface Window {
-    grecaptcha: any;
+    grecaptcha: {
+      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+    };
   }
 }
 
 export function ContactForm() {
   const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-  const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
 
   const {
     register,
@@ -44,7 +45,7 @@ export function ContactForm() {
         } else {
           setSubmitMessage({ type: 'error', text: result.message });
         }
-      } catch (error) {
+      } catch {
         setSubmitMessage({ type: 'error', text: 'reCAPTCHA verification failed. Please try again.' });
       }
     } else {
@@ -66,7 +67,6 @@ export function ContactForm() {
       {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
         <Script
           src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
-          onLoad={() => setRecaptchaLoaded(true)}
         />
       )}
 
