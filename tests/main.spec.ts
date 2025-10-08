@@ -23,15 +23,15 @@ test('homepage loads correctly', async ({ page }) => {
     await expect(page.locator('[data-test="mobile-menu"]')).toBeVisible();
 
     // Check mobile navigation items
-    await expect(page.locator('[data-test="mobile-nav-portfolio"]')).toBeVisible();
-    await expect(page.locator('[data-test="mobile-nav-contact-us"]')).toBeVisible();
+    await expect(page.locator('[data-test="mobile-nav-home"]')).toBeVisible();
+    await expect(page.locator('[data-test="mobile-nav-contact-me"]')).toBeVisible();
 
     // Close mobile menu
     await page.keyboard.press('Escape');
   } else {
     // Desktop navigation - scope to the navigation menu to avoid conflicts with page content
     const nav = page.getByRole('banner');
-    await expect(nav.getByRole('link', { name: 'Portfolio' })).toBeVisible();
+    await expect(nav.getByRole('link', { name: 'Home' })).toBeVisible();
     await expect(nav.getByRole('link', { name: 'Contact Me' })).toBeVisible();
   }
 
