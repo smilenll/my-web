@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/contexts/auth-context';
-import { Button } from '@/app/components/ui/button';
+import { Button } from '@/components/ui';
 import { ReactNode } from 'react';
 
 interface AdminButtonProps {

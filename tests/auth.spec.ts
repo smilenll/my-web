@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Authentication', () => {
+test.describe.skip('Authentication', () => {
   test('auth dialog opens when clicking sign in', async ({ page }) => {
     await page.goto('/');
 

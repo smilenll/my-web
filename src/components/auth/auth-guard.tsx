@@ -1,5 +1,6 @@
 'use client';
 
+import { LoadingSpinner } from '@/components';
 import { useAuth } from '@/contexts/auth-context';
 import { ReactNode } from 'react';
 
@@ -16,7 +17,7 @@ export function AuthGuard({
   requireAuth = false,
   requireAdmin = false,
   fallback = null,
-  loadingFallback = <div>Loading...</div>
+  loadingFallback = <LoadingSpinner />
 }: AuthGuardProps) {
   const { isAuthenticated, isAdmin, loading } = useAuth();
 

@@ -4,4 +4,5 @@ export { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 export { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './dropdown-menu';
 export { NavigationMenu, NavigationMenuItem, NavigationMenuList, NavigationMenuLink } from './navigation-menu';
 export { Sheet, SheetContent, SheetTrigger } from './sheet';
-export { LoadingSpinner, ErrorDisplay } from './loading-spinner';
+export { LoadingSpinner } from './loading-spinner';
+export { ErrorDisplay } from './error-display';

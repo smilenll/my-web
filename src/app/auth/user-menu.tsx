@@ -8,6 +8,11 @@ import { useAuth } from '@/contexts/auth-context';
 export function UserMenu() {
   const { isAuthenticated, loading } = useAuth();
 
+  // Hide authentication in production
+  if (process.env.NODE_ENV === 'production') {
+    return null;
+  }
+
   if (loading) {
     return (
       <Button variant="ghost" size="icon" className="h-9 w-9" disabled>
