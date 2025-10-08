@@ -50,7 +50,7 @@ export function HeroSection({
           </h2>
 
           {/* Description */}
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed ">
             {description}
           </p>
 
