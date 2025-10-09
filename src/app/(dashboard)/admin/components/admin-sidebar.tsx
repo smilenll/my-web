@@ -10,7 +10,6 @@ import {
   ChevronDown,
   UserPlus,
   UserCheck,
-  Shield,
   Lock,
   Monitor,
   Bell,
@@ -47,6 +46,7 @@ const menuItems = [
       { title: 'All Users', icon: Users, href: '/admin/users' },
       { title: 'Add User', icon: UserPlus, href: '/admin/users/add' },
       { title: 'Groups', icon: UserCheck, href: '/admin/groups' },
+      { title: 'Add Group', icon: UserPlus, href: '/admin/groups/add' },
 
     ],
   },

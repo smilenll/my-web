@@ -9,15 +9,12 @@ import {
 } from '@aws-sdk/client-cognito-identity-provider';
 import outputs from '../../amplify_outputs.json';
 
-export interface CognitoGroup {
-  groupName: string;
-  description?: string;
-  userCount: number;
-  creationDate: string;
-  lastModifiedDate: string;
-}
+import { Group } from '@/types/group';
 
-export async function getGroups(): Promise<CognitoGroup[]> {
+// Legacy export for backward compatibility
+export type CognitoGroup = Group;
+
+export async function getGroups(): Promise<Group[]> {
   try {
     const { requireRole } = await import('@/lib/auth-server');
     await requireRole('admin');
@@ -32,7 +29,7 @@ export async function getGroups(): Promise<CognitoGroup[]> {
 
     const result = await client.send(command);
     
-    const groups: CognitoGroup[] = [];
+    const groups: Group[] = [];
     for (const group of result.Groups || []) {
       groups.push({
         groupName: group.GroupName || '',

@@ -1,40 +1,43 @@
 'use client';
 
 import { useState } from 'react';
-import { AmplifyUser, createUser, updateUser, deleteUser, toggleUserStatus, addUserToGroup, removeUserFromGroup } from '@/actions/user-actions';
+import { updateUser, deleteUser, toggleUserStatus, addUserToGroup, removeUserFromGroup } from '@/actions/user-actions';
+import { User } from '@/types/user';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import { Trash2, Edit, Plus, Power, PowerOff, Users } from 'lucide-react';
+import { Trash2, Edit, Power, PowerOff, Users } from 'lucide-react';
 
 interface UsersTableProps {
-  users: AmplifyUser[];
+  users: User[];
 }
 
 export function UsersTable({ users: initialUsers }: UsersTableProps) {
   const [users, setUsers] = useState(initialUsers);
 
-  const [editingUser, setEditingUser] = useState<AmplifyUser | null>(null);
-  const [managingGroups, setManagingGroups] = useState<AmplifyUser | null>(null);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [managingGroups, setManagingGroups] = useState<User | null>(null);
   const [loading, setLoading] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
 
 
   const handleUpdate = async (formData: FormData) => {
-    if (!editingUser) return;
+    if (!editingUser || isSubmitting) return;
     
     const email = formData.get('email') as string;
     
-    setLoading('update');
+    setIsSubmitting(true);
     try {
       await updateUser(editingUser.username, { email });
       setEditingUser(null);
       window.location.reload();
     } catch (error) {
-      alert('Failed to update user');
+      console.error('Failed to update user:', error);
+      alert('Failed to update user. Please try again.');
     } finally {
-      setLoading(null);
+      setIsSubmitting(false);
     }
   };
 
@@ -46,7 +49,8 @@ export function UsersTable({ users: initialUsers }: UsersTableProps) {
       await deleteUser(username);
       setUsers(users.filter(u => u.username !== username));
     } catch (error) {
-      alert('Failed to delete user');
+      console.error('Failed to delete user:', error);
+      alert('Failed to delete user. Please try again.');
     } finally {
       setLoading(null);
     }
@@ -60,18 +64,19 @@ export function UsersTable({ users: initialUsers }: UsersTableProps) {
         u.username === username ? { ...u, enabled: enable } : u
       ));
     } catch (error) {
-      alert('Failed to update user status');
+      console.error('Failed to update user status:', error);
+      alert('Failed to update user status. Please try again.');
     } finally {
       setLoading(null);
     }
   };
 
   const handleAddToGroup = async (formData: FormData) => {
-    if (!managingGroups) return;
+    if (!managingGroups || isSubmitting) return;
     
     const groupName = formData.get('groupName') as string;
     
-    setLoading('group');
+    setIsSubmitting(true);
     try {
       await addUserToGroup(managingGroups.username, groupName);
       setUsers(users.map(u => 
@@ -79,10 +84,14 @@ export function UsersTable({ users: initialUsers }: UsersTableProps) {
           ? { ...u, groups: [...(u.groups || []), groupName] }
           : u
       ));
+      // Clear form
+      const form = document.querySelector('form') as HTMLFormElement;
+      form?.reset();
     } catch (error) {
-      alert('Failed to add user to group');
+      console.error('Failed to add user to group:', error);
+      alert('Failed to add user to group. Please try again.');
     } finally {
-      setLoading(null);
+      setIsSubmitting(false);
     }
   };
 
@@ -96,7 +105,8 @@ export function UsersTable({ users: initialUsers }: UsersTableProps) {
           : u
       ));
     } catch (error) {
-      alert('Failed to remove user from group');
+      console.error('Failed to remove user from group:', error);
+      alert('Failed to remove user from group. Please try again.');
     } finally {
       setLoading(null);
     }
@@ -202,8 +212,8 @@ export function UsersTable({ users: initialUsers }: UsersTableProps) {
                 type="email" 
                 required 
               />
-              <Button type="submit" disabled={loading === 'update'}>
-                {loading === 'update' ? 'Updating...' : 'Update User'}
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Updating...' : 'Update User'}
               </Button>
             </form>
           </DialogContent>
@@ -236,8 +246,8 @@ export function UsersTable({ users: initialUsers }: UsersTableProps) {
                   placeholder="Group name (e.g., admin, user)" 
                   required 
                 />
-                <Button type="submit" disabled={loading === 'group'}>
-                  {loading === 'group' ? 'Adding...' : 'Add to Group'}
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? 'Adding...' : 'Add to Group'}
                 </Button>
               </form>
             </div>

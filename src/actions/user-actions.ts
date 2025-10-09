@@ -17,25 +17,10 @@ import {
 } from '@aws-sdk/client-cognito-identity-provider';
 import outputs from '../../amplify_outputs.json';
 
-export interface AmplifyUser {
-  userId: string;
-  username: string;
-  email?: string;
-  emailVerified: boolean;
-  enabled: boolean;
-  userStatus: string;
-  userCreateDate: string;
-  userLastModifiedDate: string;
-  attributes: Record<string, string>;
-  groups?: string[];
-}
+import { User, PaginatedUsersResult } from '@/types/user';
 
-export interface PaginatedUsersResult {
-  users: AmplifyUser[];
-  nextToken?: string;
-  hasMore: boolean;
-  totalFetched: number;
-}
+// Legacy export for backward compatibility
+export type AmplifyUser = User;
 
 // Get exact user count (requires pagination through all users)
 export async function getUserCount(): Promise<number> {
@@ -175,13 +160,13 @@ export async function getUsersAction(
       region: outputs.auth.aws_region,
     });
 
-        const listUsersCommand = new ListUsersCommand({
+        const command = new ListUsersCommand({
           UserPoolId: outputs.auth.user_pool_id,
           Limit: limit,
           PaginationToken: paginationToken,
         });
 
-        const result = await client.send(listUsersCommand);
+        const result = await client.send(command);
 
         if (!result.Users) {
           return {
@@ -191,9 +176,9 @@ export async function getUsersAction(
           };
         }
 
-        const users: AmplifyUser[] = [];
+        const users: User[] = [];
         for (const user of result.Users) {
-          const amplifyUser: AmplifyUser = {
+          const amplifyUser: User = {
             userId: user.Username || '',
             username: user.Username || '',
             email: user.Attributes?.find(attr => attr.Name === 'email')?.Value,

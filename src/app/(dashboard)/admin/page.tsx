@@ -1,4 +1,6 @@
 import { getUserCount, getActiveSessions, getSystemStatus } from "@/actions/user-actions";
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default async function AdminPage() {
   const [users, activeSessions, systemStatus] = await Promise.all([
@@ -37,12 +39,16 @@ export default async function AdminPage() {
       <div className="mt-8 bg-white dark:bg-gray-900 p-6 rounded-lg border">
         <h3 className="text-lg font-medium mb-4">Quick Actions</h3>
         <div className="flex gap-4">
-          <a 
-            href="/admin/users" 
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Manage Users
-          </a>
+          <Button asChild>
+            <Link href="/admin/users">
+              Manage Users
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/admin/groups">
+              Manage Groups
+            </Link>
+          </Button>
         </div>
       </div>
     </div>

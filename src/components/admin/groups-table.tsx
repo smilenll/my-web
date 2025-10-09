@@ -1,41 +1,26 @@
 'use client';
 
 import { useState } from 'react';
-import { CognitoGroup, createGroup, deleteGroup, addUserToGroupAction } from '@/actions/group-actions';
+import { deleteGroup, addUserToGroupAction } from '@/actions/group-actions';
 import { getUsersAction } from '@/actions/user-actions';
+import { User } from '@/types/user';
+import { Group } from '@/types/group';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Trash2, Plus, UserPlus } from 'lucide-react';
+import { Trash2, UserPlus } from 'lucide-react';
 
 interface GroupsTableProps {
-  groups: CognitoGroup[];
+  groups: Group[];
 }
 
 export function GroupsTable({ groups: initialGroups }: GroupsTableProps) {
   const [groups, setGroups] = useState(initialGroups);
-  const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [addingUsersTo, setAddingUsersTo] = useState<string | null>(null);
   const [loading, setLoading] = useState<string | null>(null);
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
 
-  const handleCreate = async (formData: FormData) => {
-    const groupName = formData.get('groupName') as string;
-    const description = formData.get('description') as string;
-    
-    setLoading('create');
-    try {
-      await createGroup(groupName, description);
-      setIsCreateOpen(false);
-      window.location.reload();
-    } catch (error) {
-      alert('Failed to create group');
-    } finally {
-      setLoading(null);
-    }
-  };
+
 
   const handleDelete = async (groupName: string) => {
     if (!confirm(`Are you sure you want to delete group "${groupName}"?`)) return;
@@ -45,7 +30,8 @@ export function GroupsTable({ groups: initialGroups }: GroupsTableProps) {
       await deleteGroup(groupName);
       setGroups(groups.filter(g => g.groupName !== groupName));
     } catch (error) {
-      alert('Failed to delete group');
+      console.error('Failed to delete group:', error);
+      alert('Failed to delete group. Please try again.');
     } finally {
       setLoading(null);
     }
@@ -57,19 +43,23 @@ export function GroupsTable({ groups: initialGroups }: GroupsTableProps) {
       const { users } = await getUsersAction(60);
       setUsers(users);
     } catch (error) {
-      alert('Failed to load users');
+      console.error('Failed to load users:', error);
+      alert('Failed to load users. Please try again.');
     }
   };
 
   const handleAddUserToGroup = async (username: string) => {
-    if (!addingUsersTo) return;
+    if (!addingUsersTo || loading === username) return;
     
-    setLoading('addUser');
+    setLoading(username);
     try {
       await addUserToGroupAction(username, addingUsersTo);
       alert('User added to group successfully');
+      // Remove user from list after adding
+      setUsers(users.filter(u => u.username !== username));
     } catch (error) {
-      alert('Failed to add user to group');
+      console.error('Failed to add user to group:', error);
+      alert('Failed to add user to group. Please try again.');
     } finally {
       setLoading(null);
     }
@@ -77,29 +67,8 @@ export function GroupsTable({ groups: initialGroups }: GroupsTableProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="mb-6">
         <h2 className="text-xl font-semibold">Groups ({groups.length})</h2>
-        
-        <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="w-4 h-4 mr-2" />
-              Create Group
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Create New Group</DialogTitle>
-            </DialogHeader>
-            <form action={handleCreate} className="space-y-4">
-              <Input name="groupName" placeholder="Group name (e.g., admin, user)" required />
-              <Input name="description" placeholder="Description (optional)" />
-              <Button type="submit" disabled={loading === 'create'}>
-                {loading === 'create' ? 'Creating...' : 'Create Group'}
-              </Button>
-            </form>
-          </DialogContent>
-        </Dialog>
       </div>
 
       <div className="border rounded-lg overflow-hidden">
@@ -164,9 +133,9 @@ export function GroupsTable({ groups: initialGroups }: GroupsTableProps) {
                   <Button
                     size="sm"
                     onClick={() => handleAddUserToGroup(user.username)}
-                    disabled={loading === 'addUser'}
+                    disabled={loading === user.username}
                   >
-                    Add
+                    {loading === user.username ? 'Adding...' : 'Add'}
                   </Button>
                 </div>
               ))}
