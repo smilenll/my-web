@@ -31,13 +31,17 @@ export function ContactForm() {
     // Execute reCAPTCHA v3
     if (window.grecaptcha && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
       try {
+        console.log('Executing reCAPTCHA with site key:', process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY);
         const token = await window.grecaptcha.execute(
           process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
           { action: 'submit_contact_form' }
         );
+        console.log('reCAPTCHA token generated successfully');
 
         // Call Server Action with captcha token
+        console.log('Calling server action...');
         const result = await sendContactEmail({ ...data, captchaToken: token });
+        console.log('Server response:', result);
 
         if (result.success) {
           setSubmitMessage({ type: 'success', text: result.message });
@@ -45,10 +49,12 @@ export function ContactForm() {
         } else {
           setSubmitMessage({ type: 'error', text: result.message });
         }
-      } catch {
+      } catch (error) {
+        console.error('Error during form submission:', error);
         setSubmitMessage({ type: 'error', text: 'reCAPTCHA verification failed. Please try again.' });
       }
     } else {
+      console.log('No reCAPTCHA configured, submitting without token');
       // No reCAPTCHA configured, send without it
       const result = await sendContactEmail(data);
 
