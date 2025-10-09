@@ -20,7 +20,7 @@ export default async function AdminPage() {
         </div>
         <div className="bg-white dark:bg-gray-900 p-6 rounded-lg border">
           <h3 className="text-lg font-medium mb-2">Active Sessions</h3>
-          <p className="text-3xl font-bold text-green-600">{activeSessions}</p>
+          <p className="text-3xl font-bold text-blue-600">{activeSessions}</p>
         </div>
         <div className="bg-white dark:bg-gray-900 p-6 rounded-lg border">
           <h3 className="text-lg font-medium mb-2">System Status</h3>
@@ -31,6 +31,18 @@ export default async function AdminPage() {
             {systemStatus.status}
           </p>
           <p className="text-sm text-gray-500 mt-1">Uptime: {systemStatus.uptime}</p>
+        </div>
+      </div>
+      
+      <div className="mt-8 bg-white dark:bg-gray-900 p-6 rounded-lg border">
+        <h3 className="text-lg font-medium mb-4">Quick Actions</h3>
+        <div className="flex gap-4">
+          <a 
+            href="/admin/users" 
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Manage Users
+          </a>
         </div>
       </div>
     </div>
