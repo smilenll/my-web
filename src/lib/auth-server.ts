@@ -1,10 +1,10 @@
 import { cookies } from 'next/headers';
 import { createServerRunner } from '@aws-amplify/adapter-nextjs';
 import { getCurrentUser, fetchUserAttributes } from 'aws-amplify/auth/server';
-import awsExports from '../aws-exports';
+import outputs from '../../amplify_outputs.json';
 
 const { runWithAmplifyServerContext } = createServerRunner({
-  config: awsExports,
+  config: outputs,
 });
 
 export interface ServerUser {

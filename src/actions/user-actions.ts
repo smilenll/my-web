@@ -1,7 +1,7 @@
 'use server';
 
 import { CognitoIdentityProviderClient, ListUsersCommand, AdminListGroupsForUserCommand } from '@aws-sdk/client-cognito-identity-provider';
-import config from '../amplifyconfiguration.json';
+import outputs from '../../amplify_outputs.json';
 
 export interface AmplifyUser {
   userId: string;
@@ -35,11 +35,11 @@ export async function getUsersAction(
     await requireRole('admin');
 
     const client = new CognitoIdentityProviderClient({
-      region: config.aws_cognito_region,
+      region: outputs.auth.aws_region,
     });
 
         const listUsersCommand = new ListUsersCommand({
-          UserPoolId: config.aws_user_pools_id,
+          UserPoolId: outputs.auth.user_pool_id,
           Limit: limit,
           PaginationToken: paginationToken
         });
@@ -76,7 +76,7 @@ export async function getUsersAction(
           // Get user groups
           try {
             const groupsCommand = new AdminListGroupsForUserCommand({
-              UserPoolId: config.aws_user_pools_id,
+              UserPoolId: outputs.auth.user_pool_id,
               Username: user.Username
             });
 
