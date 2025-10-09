@@ -16,8 +16,6 @@ export type CognitoGroup = Group;
 
 export async function getGroups(): Promise<Group[]> {
   try {
-    const { requireRole } = await import('@/lib/auth-server');
-    await requireRole('admin');
 
     const client = new CognitoIdentityProviderClient({
       region: outputs.auth.aws_region,
@@ -49,8 +47,6 @@ export async function getGroups(): Promise<Group[]> {
 
 export async function createGroup(groupName: string, description?: string): Promise<void> {
   try {
-    const { requireRole } = await import('@/lib/auth-server');
-    await requireRole('admin');
 
     const client = new CognitoIdentityProviderClient({
       region: outputs.auth.aws_region,
@@ -71,8 +67,6 @@ export async function createGroup(groupName: string, description?: string): Prom
 
 export async function deleteGroup(groupName: string): Promise<void> {
   try {
-    const { requireRole } = await import('@/lib/auth-server');
-    await requireRole('admin');
 
     const client = new CognitoIdentityProviderClient({
       region: outputs.auth.aws_region,
@@ -92,8 +86,6 @@ export async function deleteGroup(groupName: string): Promise<void> {
 
 export async function addUserToGroupAction(username: string, groupName: string): Promise<void> {
   try {
-    const { requireRole } = await import('@/lib/auth-server');
-    await requireRole('admin');
 
     const client = new CognitoIdentityProviderClient({
       region: outputs.auth.aws_region,
