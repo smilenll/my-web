@@ -28,8 +28,8 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h4 className="font-medium">Email</h4>
-                      <p className="text-muted-foreground">hello@myweb.com</p>
-                      <p className="text-muted-foreground">support@myweb.com</p>
+                      <p className="text-muted-foreground">{process.env.NEXT_PUBLIC_CONTACT_EMAIL}</p>
+
                     </div>
                   </div>
 

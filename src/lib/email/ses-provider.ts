@@ -3,10 +3,10 @@ import type { EmailProvider, SendEmailParams, EmailResponse } from './email-prov
 
 // Initialize SES client once
 const sesClient = new SESClient({
-  region: process.env.AWS_SES_REGION || 'us-east-1',
+  region: process.env.SES_REGION || 'us-east-1',
   credentials: {
-    accessKeyId: process.env.AWS_SES_ACCESS_KEY_ID || '',
-    secretAccessKey: process.env.AWS_SES_SECRET_ACCESS_KEY || '',
+    accessKeyId: process.env.SES_ACCESS_KEY_ID || '',
+    secretAccessKey: process.env.SES_SECRET_ACCESS_KEY || '',
   },
 });
 

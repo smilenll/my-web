@@ -2,9 +2,18 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import Script from 'next/script';
 import { Button } from '@/components/ui';
 import { sendContactEmail } from '@/actions/contact-actions';
 import type { ContactFormData } from '@/lib/email/email-provider';
+
+declare global {
+  interface Window {
+    grecaptcha: {
+      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+    };
+  }
+}
 
 export function ContactForm() {
   const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -19,20 +28,50 @@ export function ContactForm() {
   const onSubmit = async (data: ContactFormData) => {
     setSubmitMessage(null);
 
-    // Call Server Action
-    const result = await sendContactEmail(data);
+    // Execute reCAPTCHA v3
+    if (window.grecaptcha && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
+      try {
+        const token = await window.grecaptcha.execute(
+          process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
+          { action: 'submit_contact_form' }
+        );
 
-    if (result.success) {
-      setSubmitMessage({ type: 'success', text: result.message });
-      reset();
+        // Call Server Action with captcha token
+        const result = await sendContactEmail({ ...data, captchaToken: token });
+
+        if (result.success) {
+          setSubmitMessage({ type: 'success', text: result.message });
+          reset();
+        } else {
+          setSubmitMessage({ type: 'error', text: result.message });
+        }
+      } catch {
+        setSubmitMessage({ type: 'error', text: 'reCAPTCHA verification failed. Please try again.' });
+      }
     } else {
-      setSubmitMessage({ type: 'error', text: result.message });
+      // No reCAPTCHA configured, send without it
+      const result = await sendContactEmail(data);
+
+      if (result.success) {
+        setSubmitMessage({ type: 'success', text: result.message });
+        reset();
+      } else {
+        setSubmitMessage({ type: 'error', text: result.message });
+      }
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <h3 className="text-2xl font-semibold">Send me a message</h3>
+    <>
+      {/* Load reCAPTCHA v3 script */}
+      {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
+        <Script
+          src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
+        />
+      )}
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <h3 className="text-2xl font-semibold">Send me a message</h3>
 
       {/* Name Field */}
       <div>
@@ -163,6 +202,22 @@ export function ContactForm() {
       >
         {isSubmitting ? 'Sending...' : 'Send Message'}
       </Button>
+
+      {/* reCAPTCHA v3 badge notice */}
+      {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
+        <p className="text-xs text-muted-foreground text-center">
+          This site is protected by reCAPTCHA and the Google{' '}
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline">
+            Privacy Policy
+          </a>{' '}
+          and{' '}
+          <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline">
+            Terms of Service
+          </a>{' '}
+          apply.
+        </p>
+      )}
     </form>
+    </>
   );
 }
