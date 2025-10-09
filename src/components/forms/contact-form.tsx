@@ -23,7 +23,7 @@ export function ContactForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, touchedFields },
     reset,
   } = useForm<ContactFormData>({
     mode: 'onTouched', // Validate when field is touched and loses focus
