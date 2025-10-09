@@ -9,12 +9,12 @@ import {
 } from '@/lib/email/email-templates';
 import type { ContactFormData } from '@/lib/email/email-provider';
 
-async function verifyRecaptcha(token: string): Promise<{ success: boolean; score?: number }> {
+async function verifyRecaptcha(token: string): Promise<{ success: boolean; score?: number; errorCodes?: string[] }> {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
 
   if (!secretKey) {
     console.error('[ERROR] RECAPTCHA_SECRET_KEY is not set');
-    return { success: false };
+    return { success: false, errorCodes: ['missing-secret-key'] };
   }
 
   try {
@@ -51,10 +51,10 @@ async function verifyRecaptcha(token: string): Promise<{ success: boolean; score
       console.error('[ERROR] reCAPTCHA verification failed with error codes:', data['error-codes']);
     }
 
-    return { success: data.success === true };
+    return { success: data.success === true, errorCodes: data['error-codes'] || [] };
   } catch (error) {
     console.error('[ERROR] reCAPTCHA verification exception:', error);
-    return { success: false };
+    return { success: false, errorCodes: ['exception'] };
   }
 }
 
@@ -70,9 +70,12 @@ export async function sendContactEmail(data: ContactFormData) {
 
       if (!captchaResult.success) {
         console.error('[ERROR] reCAPTCHA verification failed');
+        const errorDetails = captchaResult.errorCodes?.length
+          ? ` Error codes: ${captchaResult.errorCodes.join(', ')}`
+          : '';
         return {
           success: false,
-          message: 'reCAPTCHA verification failed. You may be flagged as a bot. Please try again or contact us directly.',
+          message: `reCAPTCHA verification failed.${errorDetails} Please try again or contact us directly.`,
         };
       }
 
