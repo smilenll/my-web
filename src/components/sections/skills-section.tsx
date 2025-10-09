@@ -15,10 +15,10 @@ const frontendTechnologies = [
 const backendTechnologies = [
   { name: 'Go', logo: '/technologies/go.svg', website: 'https://go.dev/' },
   { name: 'PHP', logo: '/technologies/php.svg', website: 'https://www.php.net/' },
+   { name: 'Next.js', logo: '/technologies/nextjs.svg', website: 'https://nextjs.org/' },
   { name: 'NestJS', logo: '/technologies/nestjs.svg', website: 'https://nestjs.com/' },
   { name: 'Laravel', logo: '/technologies/laravel.svg', website: 'https://laravel.com/' },
-  { name: 'Next.js', logo: '/technologies/nextjs.svg', website: 'https://nextjs.org/' },
-  { name: 'MySQL', logo: '/technologies/mysql.svg', website: 'https://www.mysql.com/' },
+   { name: 'MySQL', logo: '/technologies/mysql.svg', website: 'https://www.mysql.com/' },
   { name: 'PostgreSQL', logo: '/technologies/postgresql.svg', website: 'https://www.postgresql.org/' },
   { name: 'Node.js', logo: '/technologies/nodejs.svg', website: 'https://nodejs.org/' },
   { name: 'Postman', logo: '/technologies/postman.svg', website: 'https://www.postman.com/' },
