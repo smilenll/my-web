@@ -10,6 +10,7 @@ import type { ContactFormData } from '@/lib/email/email-provider';
 declare global {
   interface Window {
     grecaptcha: {
+      ready: (callback: () => void) => void;
       execute: (siteKey: string, options: { action: string }) => Promise<string>;
     };
   }
@@ -17,6 +18,7 @@ declare global {
 
 export function ContactForm() {
   const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
 
   const {
     register,
@@ -29,8 +31,18 @@ export function ContactForm() {
     setSubmitMessage(null);
 
     // Execute reCAPTCHA v3
-    if (window.grecaptcha && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
+    if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && recaptchaLoaded) {
       try {
+        console.log('Waiting for reCAPTCHA to be ready...');
+
+        // Use grecaptcha.ready() to ensure the script is fully loaded
+        await new Promise<void>((resolve) => {
+          window.grecaptcha.ready(() => {
+            console.log('reCAPTCHA is ready');
+            resolve();
+          });
+        });
+
         console.log('Executing reCAPTCHA with site key:', process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY);
         const token = await window.grecaptcha.execute(
           process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
@@ -53,7 +65,7 @@ export function ContactForm() {
         console.error('Error during form submission:', error);
         setSubmitMessage({ type: 'error', text: 'reCAPTCHA verification failed. Please try again.' });
       }
-    } else {
+    } else if (!process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
       console.log('No reCAPTCHA configured, submitting without token');
       // No reCAPTCHA configured, send without it
       const result = await sendContactEmail(data);
@@ -64,6 +76,9 @@ export function ContactForm() {
       } else {
         setSubmitMessage({ type: 'error', text: result.message });
       }
+    } else {
+      // reCAPTCHA not loaded yet
+      setSubmitMessage({ type: 'error', text: 'Please wait for reCAPTCHA to load and try again.' });
     }
   };
 
@@ -73,6 +88,13 @@ export function ContactForm() {
       {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
         <Script
           src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
+          onReady={() => {
+            console.log('reCAPTCHA script loaded');
+            setRecaptchaLoaded(true);
+          }}
+          onError={(e) => {
+            console.error('Failed to load reCAPTCHA script:', e);
+          }}
         />
       )}
 
