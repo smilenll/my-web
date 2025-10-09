@@ -1,5 +1,4 @@
 import { ContentSection } from './content-section';
-import { AdminSection } from './admin-section';
 
 export function ContactSection() {
   return (
@@ -13,11 +12,6 @@ export function ContactSection() {
           <a href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`} className="text-primary hover:underline">
             📧 {process.env.NEXT_PUBLIC_CONTACT_EMAIL}
           </a>
-        </div>
-
-        {/* Admin-only section */}
-        <div className="mt-12">
-          <AdminSection />
         </div>
       </div>
     </ContentSection>

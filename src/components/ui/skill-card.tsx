@@ -35,6 +35,7 @@ export function SkillCard({ icon, title, technologies }: SkillCardProps) {
                     src={tech.logo}
                     alt={tech.name}
                     fill
+                    sizes="48px"
                     className="object-contain"
                   />
                 </div>

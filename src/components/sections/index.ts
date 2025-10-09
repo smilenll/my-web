@@ -1,5 +1,5 @@
 // Section Components
-export { HeroSection } from './hero-section';
+export { HeroSection } from './home/hero-section';
 export { ContentSection } from './home/content-section';
 export { AdminSection } from './home/admin-section';
 export { SkillsSection } from './skills-section';

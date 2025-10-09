@@ -32,7 +32,7 @@ const toolsTechnologies = [
   { name: 'Git', logo: '/technologies/git.svg', website: 'https://git-scm.com/' },
   { name: 'Linux', logo: '/technologies/linux.svg', website: 'https://www.linux.org/' },
   { name: 'Figma', logo: '/technologies/figma.svg', website: 'https://www.figma.com/' },
-  { name: 'Claude Code', logo: '/technologies/claude.png', website: 'https://docs.claude.com/en/docs/claude-code' },
+  { name: 'Claude Code', logo: '/technologies/claude.webp', website: 'https://docs.claude.com/en/docs/claude-code' },
   { name: 'Cursor', logo: '/technologies/cursor.svg', website: 'https://cursor.com/' },
 ];
 
