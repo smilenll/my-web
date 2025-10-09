@@ -1,4 +1,4 @@
-import { ContentSection } from './content-section';
+import { ContentSection } from './home/content-section';
 import { SkillCard } from '@/components/ui/skill-card';
 
 const frontendTechnologies = [

@@ -13,7 +13,6 @@ export function ContactSection() {
           <a href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL}`} className="text-primary hover:underline">
             📧 {process.env.NEXT_PUBLIC_CONTACT_EMAIL}
           </a>
-          <span className="hidden sm:inline">•</span>
         </div>
 
         {/* Admin-only section */}

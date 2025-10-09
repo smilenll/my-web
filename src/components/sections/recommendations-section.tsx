@@ -1,4 +1,4 @@
-import { ContentSection } from './content-section';
+import { ContentSection } from './home/content-section';
 import { RecommendationCard } from '@/components/ui/recommendation-card';
 
 interface Recommendation {
