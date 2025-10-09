@@ -28,6 +28,9 @@ async function verifyRecaptcha(token: string): Promise<{ success: boolean; score
 
     const data = await response.json();
 
+    // Log the full response for debugging
+    console.log('reCAPTCHA verification response:', JSON.stringify(data));
+
     // reCAPTCHA v3 returns a score between 0.0 (bot) and 1.0 (human)
     // Recommended threshold is 0.5
     const SCORE_THRESHOLD = 0.5;
@@ -40,6 +43,11 @@ async function verifyRecaptcha(token: string): Promise<{ success: boolean; score
       }
 
       return { success: isHuman, score: data.score };
+    }
+
+    // Log why it failed
+    if (!data.success) {
+      console.error('reCAPTCHA verification failed:', data['error-codes']);
     }
 
     return { success: data.success === true };
