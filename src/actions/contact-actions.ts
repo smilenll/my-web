@@ -3,9 +3,7 @@
 import { sesProvider } from '@/lib/email/ses-provider';
 import {
   generateContactEmailHtml,
-  generateContactEmailText,
-  generateCustomerConfirmationHtml,
-  generateCustomerConfirmationText
+  generateContactEmailText
 } from '@/lib/email/email-templates';
 import type { ContactFormData } from '@/lib/email/email-provider';
 
@@ -99,13 +97,15 @@ export async function sendContactEmail(data: ContactFormData) {
     }
 
     // Send notification email to admin (web@greensmil.com)
+    // NOTE: We only send to our verified business email to comply with AWS SES policies
+    // Sending automated emails to unverified user-submitted addresses is against AWS best practices
     const adminHtml = generateContactEmailHtml(data);
     const adminText = generateContactEmailText(data);
 
     const adminResult = await sesProvider.sendEmail({
-      to: process.env.SES_TO_EMAIL, // web@greensmil.com
+      to: process.env.SES_TO_EMAIL, // web@greensmil.com (verified address)
       from: process.env.SES_FROM_EMAIL, // noreply@greensmil.com
-      replyTo: data.email, // Customer's email
+      replyTo: data.email, // Customer's email (so we can reply directly)
       subject: `[Contact Form] ${data.subject}`,
       html: adminHtml,
       text: adminText,
@@ -116,33 +116,9 @@ export async function sendContactEmail(data: ContactFormData) {
       throw new Error(adminResult.error || 'Failed to send notification email');
     }
 
-    // Send confirmation email to customer
-    const customerHtml = generateCustomerConfirmationHtml(data);
-    const customerText = generateCustomerConfirmationText(data);
-
-    const customerResult = await sesProvider.sendEmail({
-      to: data.email, // Customer's email
-      from: process.env.SES_FROM_EMAIL, // noreply@greensmil.com
-      replyTo: process.env.SES_TO_EMAIL, // web@greensmil.com (so customer can reply)
-      subject: 'Thank you for contacting Greensmil',
-      html: customerHtml,
-      text: customerText,
-    });
-
-    // Don't fail the entire operation if customer confirmation fails
-    // But log it for monitoring
-    if (!customerResult.success) {
-      console.error('Failed to send customer confirmation:', customerResult.error);
-      // Still return success since the main notification was sent
-      return {
-        success: true,
-        message: 'Your message has been sent successfully! (Note: Confirmation email may be delayed)',
-      };
-    }
-
     return {
       success: true,
-      message: 'Your message has been sent successfully!',
+      message: 'Your message has been sent successfully! We will respond to your email address soon.',
     };
   } catch (error) {
     console.error('Contact form error:', error);

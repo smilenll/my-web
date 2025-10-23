@@ -1,10 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { Authenticator } from '@aws-amplify/ui-react';
 import { User, LogOut } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Button } from '@/components/ui';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Button, Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui';
 import { useAuth } from '@/contexts/auth-context';
+import { SignInForm } from '@/components/auth/sign-in-form';
+import { SignUpForm } from '@/components/auth/sign-up-form';
+import { ForgotPasswordForm } from '@/components/auth/forgot-password-form';
 
 interface AuthDialogProps {
   children: React.ReactNode;
@@ -12,6 +14,7 @@ interface AuthDialogProps {
 
 export function AuthDialog({ children }: AuthDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const { user, isAuthenticated, signOut } = useAuth();
 
 
@@ -56,18 +59,51 @@ export function AuthDialog({ children }: AuthDialogProps) {
     );
   }
 
-  // If not authenticated, show simple auth form
+  // If not authenticated, show auth forms
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={(open) => {
+      setIsOpen(open);
+      if (!open) setShowForgotPassword(false);
+    }}>
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent data-test="auth-dialog">
-        <DialogHeader>
-          <DialogTitle data-test="auth-dialog-title">Sign In</DialogTitle>
-        </DialogHeader>
-
-        <Authenticator hideSignUp={false} />
+      <DialogContent data-test="auth-dialog" className="sm:max-w-md">
+        {showForgotPassword ? (
+          <>
+            <DialogHeader>
+              <DialogTitle data-test="auth-dialog-title">Reset Password</DialogTitle>
+            </DialogHeader>
+            <ForgotPasswordForm
+              onSuccess={() => {
+                setShowForgotPassword(false);
+                setIsOpen(false);
+              }}
+              onSwitchToSignIn={() => setShowForgotPassword(false)}
+            />
+          </>
+        ) : (
+          <>
+            <DialogHeader>
+              <DialogTitle data-test="auth-dialog-title">Welcome</DialogTitle>
+            </DialogHeader>
+            <Tabs defaultValue="signin" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="signin">Sign In</TabsTrigger>
+                <TabsTrigger value="signup">Sign Up</TabsTrigger>
+              </TabsList>
+              <TabsContent value="signin">
+                <SignInForm
+                  onSuccess={() => setIsOpen(false)}
+                  onForgotPassword={() => setShowForgotPassword(true)}
+                />
+              </TabsContent>
+              <TabsContent value="signup">
+                <SignUpForm onSuccess={() => setIsOpen(false)} />
+              </TabsContent>
+            </Tabs>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );
