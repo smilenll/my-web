@@ -17,22 +17,21 @@ export default function UserList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function fetchUsers() {
-      try {
-        setLoading(true);
-        setError(null);
-        const result = await getUsersAction();
-        setUsers(result.users);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch users');
-        console.error('Error fetching users:', err);
-      } finally {
-        setLoading(false);
-      }
+  const loadUsers = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await getUsersAction(60);
+      setUsers(result.users);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load users');
+    } finally {
+      setLoading(false);
     }
+  };
 
-    fetchUsers();
+  useEffect(() => {
+    loadUsers();
   }, []);
 
   if (loading) {
@@ -60,7 +59,7 @@ export default function UserList() {
         <div className="border rounded-lg p-8 text-center" data-test="error-container">
           <p className="text-red-600 mb-4" data-test="error-message">{error}</p>
           <button
-            onClick={() => window.location.reload()}
+            onClick={loadUsers}
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
             data-test="retry-button"
           >
