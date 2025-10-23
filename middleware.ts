@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createServerRunner } from '@aws-amplify/adapter-nextjs';
 import { getCurrentUser, fetchUserAttributes } from 'aws-amplify/auth/server';
-import awsExports from './src/aws-exports';
+import outputs from './amplify_outputs.json';
 
 const { runWithAmplifyServerContext } = createServerRunner({
-  config: awsExports,
+  config: outputs,
 });
 
 // Define protected routes that require authentication

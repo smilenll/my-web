@@ -640,6 +640,12 @@ git push origin feature/your-feature
 
 ---
 
+## 🔗 Related Documentation
+
+- [AMPLIFY_MIGRATION.md](AMPLIFY_MIGRATION.md) - Full-stack migration checklist and TODO items
+
+---
+
 **Last Updated**: October 2025
 **Maintained by**: Smilen Lyubenov
 **Contact**: smilenlyubenov@gmail.com

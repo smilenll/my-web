@@ -44,4 +44,11 @@ next-env.d.ts
 
 # amplify
 amplify_backup/
+amplify_gen1_backup/
 .amplifyrc
+
+# Amplify Gen 2
+amplify_outputs.json
+amplify_outputs*.json
+.amplify/
+.amplify-cache/

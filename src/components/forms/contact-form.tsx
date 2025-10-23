@@ -25,7 +25,9 @@ export function ContactForm() {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<ContactFormData>();
+  } = useForm<ContactFormData>({
+    mode: 'onTouched', // Validate when field is touched and loses focus
+  });
 
   const onSubmit = async (data: ContactFormData) => {
     setSubmitMessage(null);
@@ -33,27 +35,20 @@ export function ContactForm() {
     // Execute reCAPTCHA v3
     if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && recaptchaLoaded) {
       try {
-        console.log('Waiting for reCAPTCHA to be ready...');
-
         // Use grecaptcha.ready() to ensure the script is fully loaded
         await new Promise<void>((resolve) => {
           window.grecaptcha.ready(() => {
-            console.log('reCAPTCHA is ready');
             resolve();
           });
         });
 
-        console.log('Executing reCAPTCHA with site key:', process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY);
         const token = await window.grecaptcha.execute(
           process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
           { action: 'submit_contact_form' }
         );
-        console.log('reCAPTCHA token generated successfully');
 
         // Call Server Action with captcha token
-        console.log('Calling server action...');
         const result = await sendContactEmail({ ...data, captchaToken: token });
-        console.log('Server response:', result);
 
         if (result.success) {
           setSubmitMessage({ type: 'success', text: result.message });
@@ -66,7 +61,6 @@ export function ContactForm() {
         setSubmitMessage({ type: 'error', text: 'reCAPTCHA verification failed. Please try again.' });
       }
     } else if (!process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
-      console.log('No reCAPTCHA configured, submitting without token');
       // No reCAPTCHA configured, send without it
       const result = await sendContactEmail(data);
 
@@ -89,7 +83,6 @@ export function ContactForm() {
         <Script
           src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
           onReady={() => {
-            console.log('reCAPTCHA script loaded');
             setRecaptchaLoaded(true);
           }}
           onError={(e) => {

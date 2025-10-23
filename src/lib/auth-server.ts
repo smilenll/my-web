@@ -1,16 +1,17 @@
 import { cookies } from 'next/headers';
 import { createServerRunner } from '@aws-amplify/adapter-nextjs';
-import { getCurrentUser, fetchUserAttributes } from 'aws-amplify/auth/server';
-import awsExports from '../aws-exports';
+import { getCurrentUser, fetchUserAttributes, fetchAuthSession } from 'aws-amplify/auth/server';
+import outputs from '../../amplify_outputs.json';
 
 const { runWithAmplifyServerContext } = createServerRunner({
-  config: awsExports,
+  config: outputs,
 });
 
 export interface ServerUser {
   userId: string;
   username: string;
   attributes?: Record<string, string | undefined>;
+  groups?: string[];
 }
 
 /**
@@ -87,23 +88,40 @@ export async function getAuthenticatedUserWithAttributes(): Promise<ServerUser |
 }
 
 /**
+ * Get user groups from JWT token
+ * This is the recommended Amplify Gen 2 approach - groups are in the token!
+ */
+export async function getUserGroups(): Promise<string[]> {
+  try {
+    const session = await runWithAmplifyServerContext({
+      nextServerContext: { cookies },
+      operation: async (contextSpec) => {
+        return await fetchAuthSession(contextSpec);
+      },
+    });
+
+    // Groups are available in the access token payload as 'cognito:groups'
+    const groups = session?.tokens?.accessToken?.payload['cognito:groups'];
+
+    if (Array.isArray(groups)) {
+      return groups as string[];
+    }
+
+    return [];
+  } catch (error) {
+    console.error('Get groups error:', error);
+    return [];
+  }
+}
+
+/**
  * Check if user has a specific role/group
+ * Uses JWT token claims (recommended Amplify Gen 2 approach)
  */
 export async function userHasRole(role: string): Promise<boolean> {
   try {
-    const user = await getAuthenticatedUserWithAttributes();
-
-    if (!user?.attributes) {
-      return false;
-    }
-
-    const userGroups = user.attributes['cognito:groups'];
-
-    if (typeof userGroups === 'string') {
-      const groups = userGroups.split(',');
-      return groups.includes(role);
-    }
-    return false;
+    const groups = await getUserGroups();
+    return groups.includes(role);
   } catch (error) {
     console.error('Role check error:', error);
     return false;
