@@ -24,31 +24,8 @@ jobs:
     - name: 📦 Install dependencies
       run: npm ci --prefer-offline --no-audit
 
-    - name: 🔧 Create mock Amplify outputs for CI
-      run: |
-        cat > amplify_outputs.json << 'EOF'
-        {
-          "version": "1.4",
-          "auth": {
-            "aws_region": "us-east-2",
-            "user_pool_id": "mock-pool-id",
-            "user_pool_client_id": "mock-client-id",
-            "identity_pool_id": "us-east-2:mock-identity-pool",
-            "password_policy": {
-              "min_length": 8,
-              "require_lowercase": false,
-              "require_uppercase": false,
-              "require_numbers": false,
-              "require_symbols": false
-            },
-            "standard_required_attributes": ["email"],
-            "username_attributes": ["email"],
-            "user_verification_types": ["email"],
-            "mfa_configuration": "NONE",
-            "mfa_methods": []
-          }
-        }
-        EOF
+    - name: 🔧 Setup mock Amplify config
+      uses: ./.github/actions/setup-amplify-mock
 
     - name: 🔍 Run ESLint
       run: npm run lint
