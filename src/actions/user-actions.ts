@@ -1,8 +1,8 @@
 'use server';
 
-import { 
-  CognitoIdentityProviderClient, 
-  ListUsersCommand, 
+import {
+  CognitoIdentityProviderClient,
+  ListUsersCommand,
   AdminListGroupsForUserCommand,
   AdminCreateUserCommand,
   AdminDeleteUserCommand,
@@ -16,6 +16,7 @@ import {
   DeleteGroupCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 import outputs from '../../amplify_outputs.json';
+import { requireRole } from '@/lib/auth-server';
 
 import { User, PaginatedUsersResult } from '@/types/user';
 
@@ -24,6 +25,9 @@ export type AmplifyUser = User;
 
 // Get exact user count (requires pagination through all users)
 export async function getUserCount(): Promise<number> {
+  // Require admin role before executing
+  await requireRole('admin');
+
   try {
 
     const client = new CognitoIdentityProviderClient({
@@ -54,6 +58,8 @@ export async function getUserCount(): Promise<number> {
 
 // Get approximate user count (faster, but not exact if you have >60 users)
 export async function getApproximateUserCount(): Promise<{ count: number; isApproximate: boolean }> {
+  await requireRole('admin');
+
   try {
 
     const client = new CognitoIdentityProviderClient({
@@ -80,6 +86,8 @@ export async function getApproximateUserCount(): Promise<{ count: number; isAppr
 }
 
 export async function getActiveSessions(): Promise<number> {
+  await requireRole('admin');
+
   try {
 
     const client = new CognitoIdentityProviderClient({
@@ -110,6 +118,8 @@ export async function getActiveSessions(): Promise<number> {
 }
 
 export async function getSystemStatus(): Promise<{ status: 'Online' | 'Degraded' | 'Offline'; uptime: string }> {
+  await requireRole('admin');
+
   try {
 
     // Simple health check - try to connect to Cognito
@@ -141,6 +151,8 @@ export async function getUsersAction(
   limit: number = 60,
   paginationToken?: string
 ): Promise<PaginatedUsersResult> {
+  await requireRole('admin');
+
   try {
 
     const client = new CognitoIdentityProviderClient({
@@ -214,6 +226,8 @@ export async function getUsersAction(
 
 // CREATE USER
 export async function createUser(email: string, temporaryPassword: string): Promise<string> {
+  await requireRole('admin');
+
   try {
 
     const client = new CognitoIdentityProviderClient({
@@ -241,6 +255,8 @@ export async function createUser(email: string, temporaryPassword: string): Prom
 
 // UPDATE USER
 export async function updateUser(username: string, attributes: Record<string, string>): Promise<void> {
+  await requireRole('admin');
+
   try {
 
     const client = new CognitoIdentityProviderClient({
@@ -267,6 +283,8 @@ export async function updateUser(username: string, attributes: Record<string, st
 
 // DELETE USER
 export async function deleteUser(username: string): Promise<void> {
+  await requireRole('admin');
+
   try {
 
     const client = new CognitoIdentityProviderClient({
@@ -287,6 +305,8 @@ export async function deleteUser(username: string): Promise<void> {
 
 // ENABLE/DISABLE USER
 export async function toggleUserStatus(username: string, enable: boolean): Promise<void> {
+  await requireRole('admin');
+
   try {
 
     const client = new CognitoIdentityProviderClient({
@@ -306,6 +326,8 @@ export async function toggleUserStatus(username: string, enable: boolean): Promi
 
 // MANAGE USER GROUPS
 export async function addUserToGroup(username: string, groupName: string): Promise<void> {
+  await requireRole('admin');
+
   try {
 
     const client = new CognitoIdentityProviderClient({
@@ -326,6 +348,8 @@ export async function addUserToGroup(username: string, groupName: string): Promi
 }
 
 export async function removeUserFromGroup(username: string, groupName: string): Promise<void> {
+  await requireRole('admin');
+
   try {
 
     const client = new CognitoIdentityProviderClient({
@@ -355,6 +379,8 @@ export interface CognitoGroup {
 }
 
 export async function getGroups(): Promise<CognitoGroup[]> {
+  await requireRole('admin');
+
   try {
 
     const client = new CognitoIdentityProviderClient({
@@ -400,6 +426,8 @@ export async function getGroups(): Promise<CognitoGroup[]> {
 }
 
 export async function createGroup(groupName: string, description?: string): Promise<void> {
+  await requireRole('admin');
+
   try {
 
     const client = new CognitoIdentityProviderClient({
@@ -420,6 +448,8 @@ export async function createGroup(groupName: string, description?: string): Prom
 }
 
 export async function deleteGroup(groupName: string): Promise<void> {
+  await requireRole('admin');
+
   try {
 
     const client = new CognitoIdentityProviderClient({

@@ -1,13 +1,14 @@
 'use server';
 
-import { 
-  CognitoIdentityProviderClient, 
+import {
+  CognitoIdentityProviderClient,
   ListGroupsCommand,
   CreateGroupCommand,
   DeleteGroupCommand,
   AdminAddUserToGroupCommand
 } from '@aws-sdk/client-cognito-identity-provider';
 import outputs from '../../amplify_outputs.json';
+import { requireRole } from '@/lib/auth-server';
 
 import { Group } from '@/types/group';
 
@@ -15,6 +16,8 @@ import { Group } from '@/types/group';
 export type CognitoGroup = Group;
 
 export async function getGroups(): Promise<Group[]> {
+  await requireRole('admin');
+
   try {
 
     const client = new CognitoIdentityProviderClient({
@@ -46,6 +49,8 @@ export async function getGroups(): Promise<Group[]> {
 }
 
 export async function createGroup(groupName: string, description?: string): Promise<void> {
+  await requireRole('admin');
+
   try {
 
     const client = new CognitoIdentityProviderClient({
@@ -66,6 +71,8 @@ export async function createGroup(groupName: string, description?: string): Prom
 }
 
 export async function deleteGroup(groupName: string): Promise<void> {
+  await requireRole('admin');
+
   try {
 
     const client = new CognitoIdentityProviderClient({
@@ -85,6 +92,8 @@ export async function deleteGroup(groupName: string): Promise<void> {
 }
 
 export async function addUserToGroupAction(username: string, groupName: string): Promise<void> {
+  await requireRole('admin');
+
   try {
 
     const client = new CognitoIdentityProviderClient({

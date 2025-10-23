@@ -31,8 +31,13 @@ export function UsersTable({ users: initialUsers }: UsersTableProps) {
     setIsSubmitting(true);
     try {
       await updateUser(editingUser.username, { email });
+      // Update local state
+      setUsers(users.map(u =>
+        u.username === editingUser.username
+          ? { ...u, email }
+          : u
+      ));
       setEditingUser(null);
-      window.location.reload();
     } catch (error) {
       console.error('Failed to update user:', error);
       alert('Failed to update user. Please try again.');

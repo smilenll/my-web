@@ -16,7 +16,7 @@ async function verifyRecaptcha(token: string): Promise<{ success: boolean; score
   }
 
   try {
-    console.error('[DEBUG] Calling Google reCAPTCHA API...');
+    console.log('[DEBUG] Calling Google reCAPTCHA API...');
     const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
       method: 'POST',
       headers: {
@@ -28,7 +28,7 @@ async function verifyRecaptcha(token: string): Promise<{ success: boolean; score
     const data = await response.json();
 
     // Log the full response for debugging
-    console.error('[DEBUG] reCAPTCHA verification response:', JSON.stringify(data));
+    console.log('[DEBUG] reCAPTCHA verification response:', JSON.stringify(data));
 
     // reCAPTCHA v3 returns a score between 0.0 (bot) and 1.0 (human)
     // Recommended threshold is 0.5
@@ -58,13 +58,13 @@ async function verifyRecaptcha(token: string): Promise<{ success: boolean; score
 
 export async function sendContactEmail(data: ContactFormData) {
   try {
-    console.error('[DEBUG] sendContactEmail called with captchaToken:', !!data.captchaToken);
+    console.log('[DEBUG] sendContactEmail called with captchaToken:', !!data.captchaToken);
 
     // Verify reCAPTCHA token
     if (data.captchaToken) {
-      console.error('[DEBUG] Verifying reCAPTCHA token...');
+      console.log('[DEBUG] Verifying reCAPTCHA token...');
       const captchaResult = await verifyRecaptcha(data.captchaToken);
-      console.error('[DEBUG] reCAPTCHA result:', captchaResult);
+      console.log('[DEBUG] reCAPTCHA result:', captchaResult);
 
       if (!captchaResult.success) {
         console.error('[ERROR] reCAPTCHA verification failed');
@@ -77,7 +77,7 @@ export async function sendContactEmail(data: ContactFormData) {
         };
       }
 
-      console.error(`[SUCCESS] reCAPTCHA verified. Score: ${captchaResult.score}`);
+      console.log(`[SUCCESS] reCAPTCHA verified. Score: ${captchaResult.score}`);
     } else if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
       // If reCAPTCHA is configured but no token provided
       console.error('[ERROR] reCAPTCHA configured but no token provided');
