@@ -77,7 +77,7 @@ export async function sendContactEmail(data: ContactFormData) {
         };
       }
 
-      console.error(`[SUCCESS] reCAPTCHA verified. Score: ${captchaResult.score}`);
+      console.log(`[SUCCESS] reCAPTCHA verified. Score: ${captchaResult.score}`);
     } else if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
       // If reCAPTCHA is configured but no token provided
       console.error('[ERROR] reCAPTCHA configured but no token provided');
