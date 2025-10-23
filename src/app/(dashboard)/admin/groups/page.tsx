@@ -1,6 +1,9 @@
 import { getGroups } from "@/actions/group-actions";
 import { GroupsTable } from "@/components/admin/groups-table";
 
+// Force dynamic rendering for authenticated pages
+export const dynamic = 'force-dynamic';
+
 export default async function GroupsPage() {
   const groups = await getGroups();
 

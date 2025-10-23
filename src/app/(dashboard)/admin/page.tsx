@@ -2,6 +2,9 @@ import { getUserCount, getActiveSessions, getSystemStatus } from "@/actions/user
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
+// Force dynamic rendering for authenticated pages
+export const dynamic = 'force-dynamic';
+
 export default async function AdminPage() {
   const [users, activeSessions, systemStatus] = await Promise.all([
     getUserCount(),
