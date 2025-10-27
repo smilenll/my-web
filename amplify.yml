@@ -13,7 +13,7 @@ frontend:
         - npx ampx generate outputs --branch $AWS_BRANCH --app-id $AWS_APP_ID
     build:
       commands:
-        - env | grep -E '^(RECAPTCHA_SECRET_KEY|SES_|NEXT_PUBLIC_)' > .env.production
+        - env | grep -E '^(RECAPTCHA_SECRET_KEY|RESEND_|NEXT_PUBLIC_)' > .env.production
         - npm run build
   artifacts:
     baseDirectory: .next
