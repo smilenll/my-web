@@ -1,9 +1,11 @@
 'use server';
 
-import { sesProvider } from '@/lib/email/ses-provider';
+import { resendProvider } from '@/lib/email/resend-provider';
 import {
   generateContactEmailHtml,
-  generateContactEmailText
+  generateContactEmailText,
+  generateCustomerConfirmationHtml,
+  generateCustomerConfirmationText
 } from '@/lib/email/email-templates';
 import type { ContactFormData } from '@/lib/email/email-provider';
 
@@ -88,8 +90,8 @@ export async function sendContactEmail(data: ContactFormData) {
     }
 
     // Validate environment variables
-    if (!process.env.SES_FROM_EMAIL || !process.env.SES_TO_EMAIL) {
-      console.error('Email configuration error: Missing SES environment variables');
+    if (!process.env.RESEND_FROM_EMAIL || !process.env.RESEND_TO_EMAIL) {
+      console.error('Email configuration error: Missing Resend environment variables');
       return {
         success: false,
         message: 'Something went wrong. Please try again later.',
@@ -97,14 +99,14 @@ export async function sendContactEmail(data: ContactFormData) {
     }
 
     // Send notification email to admin (web@greensmil.com)
-    // NOTE: We only send to our verified business email to comply with AWS SES policies
-    // Sending automated emails to unverified user-submitted addresses is against AWS best practices
+    // NOTE: We only send to our verified business email to comply with email best practices
+    // Sending automated emails to unverified user-submitted addresses is against best practices
     const adminHtml = generateContactEmailHtml(data);
     const adminText = generateContactEmailText(data);
 
-    const adminResult = await sesProvider.sendEmail({
-      to: process.env.SES_TO_EMAIL, // web@greensmil.com (verified address)
-      from: process.env.SES_FROM_EMAIL, // noreply@greensmil.com
+    const adminResult = await resendProvider.sendEmail({
+      to: process.env.RESEND_TO_EMAIL, // web@greensmil.com (verified address)
+      from: process.env.RESEND_FROM_EMAIL, // noreply@greensmil.com
       replyTo: data.email, // Customer's email (so we can reply directly)
       subject: `[Contact Form] ${data.subject}`,
       html: adminHtml,
@@ -116,9 +118,33 @@ export async function sendContactEmail(data: ContactFormData) {
       throw new Error(adminResult.error || 'Failed to send notification email');
     }
 
+    // Send confirmation email to customer (from noreply@greensmil.com)
+    const customerHtml = generateCustomerConfirmationHtml(data);
+    const customerText = generateCustomerConfirmationText(data);
+
+    const customerResult = await resendProvider.sendEmail({
+      to: data.email, // Customer's email
+      from: process.env.RESEND_FROM_EMAIL, // noreply@greensmil.com
+      replyTo: process.env.RESEND_TO_EMAIL, // web@greensmil.com (so they can reply)
+      subject: 'Thank you for contacting Greensmil',
+      html: customerHtml,
+      text: customerText,
+    });
+
+    // Don't fail the entire operation if customer confirmation fails
+    // But log it for monitoring
+    if (!customerResult.success) {
+      console.error('Failed to send customer confirmation:', customerResult.error);
+      // Still return success since the main notification was sent
+      return {
+        success: true,
+        message: `Your message has been sent successfully! We will respond to: ${data.email}`,
+      };
+    }
+
     return {
       success: true,
-      message: 'Your message has been sent successfully! We will respond to your email address soon.',
+      message: `Your message has been sent successfully! We will respond to: ${data.email}. Please check your inbox for a confirmation email.`,
     };
   } catch (error) {
     console.error('Contact form error:', error);
